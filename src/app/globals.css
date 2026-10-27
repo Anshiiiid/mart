@@ -1,26 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #09070F;
+  --foreground: #F8FAFC;
+  --gold-glow: #F59E0B;
+  --mandala-amber: #D97706;
+  --temple-ruby: #E11D48;
+  --cyber-cyan: #06B6D4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-heading: 'Cinzel Decorative', serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  selection-background-color: #F59E0B;
+  selection-color: #000000;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #09070f;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #d97706, #78350f);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(18, 14, 29, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.25);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(26, 20, 41, 0.8) 0%, rgba(13, 10, 23, 0.9) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+/* Cyber-Traditional Neon & Glow Effects */
+.glow-gold {
+  filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+}
+
+.glow-cyan {
+  filter: drop-shadow(0 0 16px rgba(6, 182, 212, 0.6));
+}
+
+.glow-ruby {
+  filter: drop-shadow(0 0 16px rgba(225, 29, 72, 0.6));
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 30%, #F59E0B 70%, #B45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cyber-gradient-text {
+  background: linear-gradient(135deg, #A5F3FC 0%, #06B6D4 50%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ruby-gradient-text {
+  background: linear-gradient(135deg, #FECDD3 0%, #FB7185 50%, #E11D48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Indian Architectural Arch Mask */
+.temple-arch-top {
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+}
+
+/* Subtle Pulsing / Rotating Mandala Keyframes */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+/* Interactive Folder Tab styling */
+.folder-tab {
+  clip-path: polygon(0% 100%, 0% 15px, 15px 0%, calc(100% - 25px) 0%, 100% 15px, 100% 100%);
 }
