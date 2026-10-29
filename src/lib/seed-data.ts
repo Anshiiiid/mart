@@ -10,6 +10,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#F59E0B', // Amber Gold
     bgGradient: 'from-amber-950/40 via-amber-900/20 to-black',
     iconName: 'Zap',
+    bannerImage: '/categories/home-appliances.jpg',
     description: 'Next-gen smart kitchen and living appliances infused with Indian motifs.',
     order: 1,
     itemCount: 4,
@@ -23,6 +24,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#06B6D4', // Cyan
     bgGradient: 'from-cyan-950/40 via-cyan-900/20 to-black',
     iconName: 'Headphones',
+    bannerImage: '/categories/cyber-audio.jpg',
     description: 'Acoustic mastery meets glowing neon and engraved mandala brass elements.',
     order: 2,
     itemCount: 4,
@@ -36,6 +38,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#D97706', // Brass/Bronze
     bgGradient: 'from-orange-950/40 via-amber-950/20 to-black',
     iconName: 'UtensilsCrossed',
+    bannerImage: '/categories/kitchen-cookware.jpg',
     description: 'Cast iron cookware, hammered brass kettles and Ayurvedic earthen pots.',
     order: 3,
     itemCount: 4,
@@ -49,6 +52,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#8B5CF6', // Purple/Violet
     bgGradient: 'from-purple-950/40 via-violet-900/20 to-black',
     iconName: 'Keyboard',
+    bannerImage: '/categories/computing-workspace.jpg',
     description: 'Ergonomic mechanical keyboards, precision optical gear and teak rests.',
     order: 4,
     itemCount: 3,
@@ -62,6 +66,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#EAB308', // Warm Gold
     bgGradient: 'from-yellow-950/40 via-amber-950/20 to-black',
     iconName: 'Lamp',
+    bannerImage: '/categories/ambient-living.jpg',
     description: 'Warm glowing terracotta smart lamps and handwoven bamboo planters.',
     order: 5,
     itemCount: 3,
@@ -75,6 +80,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#EC4899', // Pink / Rose
     bgGradient: 'from-pink-950/40 via-rose-950/20 to-black',
     iconName: 'Sparkles',
+    bannerImage: '/categories/personal-care.jpg',
     description: 'Ionic styling tools alongside neem combs and Kerala herbal elixirs.',
     order: 6,
     itemCount: 3,
@@ -88,6 +94,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#10B981', // Emerald
     bgGradient: 'from-emerald-950/40 via-teal-950/20 to-black',
     iconName: 'HeartHandshake',
+    bannerImage: '/categories/kids-nursery.jpg',
     description: 'Channapatna inspired safe wooden toys, organic plush bears and baby kits.',
     order: 7,
     itemCount: 2,
@@ -101,6 +108,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#EF4444', // Crimson
     bgGradient: 'from-red-950/40 via-rose-950/20 to-black',
     iconName: 'ShieldAlert',
+    bannerImage: '/categories/smart-mobility.jpg',
     description: 'Cyclone cordless hand vacuums, HUD smart LED helmets and EDC gear.',
     order: 8,
     itemCount: 2,
@@ -114,6 +122,7 @@ export const initialCategories: CategoryFolder[] = [
     color: '#3B82F6', // Blue
     bgGradient: 'from-blue-950/40 via-indigo-950/20 to-black',
     iconName: 'Droplets',
+    bannerImage: '/categories/modern-sanitation.jpg',
     description: 'Microfiber dual-chamber spin mops and eco-certified botanical sprays.',
     order: 9,
     itemCount: 2,

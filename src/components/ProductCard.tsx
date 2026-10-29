@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Product } from '@/lib/types';
-import { Star, Eye, Plus, Check, Sparkles } from 'lucide-react';
+import { Star, Eye, Plus, Check, Sparkles, ShoppingBag } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -24,38 +24,36 @@ export default function ProductCard({ product, onSelect, onAddToCart, lang }: Pr
   return (
     <div
       onClick={() => onSelect(product)}
-      className="group relative rounded-2xl bg-gradient-to-b from-[#18132B]/80 to-[#100D1F]/90 border border-amber-500/20 hover:border-amber-400/80 hover:shadow-[0_12px_32px_rgba(245,158,11,0.25)] transition-all duration-300 flex flex-col overflow-hidden cursor-pointer"
+      className="group relative rounded-2xl bg-[#FFFDF7] border-2 border-[#1E1B18] shadow-[4px_4px_0px_#1E1B18] hover:shadow-[7px_7px_0px_#1E1B18] hover:-translate-x-0.5 hover:-translate-y-1 transition-all duration-200 flex flex-col overflow-hidden cursor-pointer"
     >
-      {/* Top Media Area */}
-      <div className="relative aspect-square w-full overflow-hidden bg-black/50">
+      {/* Top Media Area styled like Indian postal label */}
+      <div className="relative aspect-square w-full overflow-hidden bg-[#FAF4E6] border-b-2 border-[#1E1B18] p-4 flex items-center justify-center">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-md"
+          loading="lazy"
         />
-
-        {/* Gradient Mask */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#100D1F] via-transparent to-transparent opacity-80" />
 
         {/* 3D badge */}
         {product.is3dAvailable && (
-          <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-cyan-950/90 border border-cyan-400/60 text-cyan-300 text-[10px] font-black tracking-wider flex items-center gap-1 shadow-lg">
-            <Eye className="w-3 h-3 text-cyan-400" />
+          <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-[#19857B] text-white border-2 border-[#1E1B18] text-[10px] font-black tracking-wider flex items-center gap-1 shadow-[2px_2px_0px_#1E1B18]">
+            <Eye className="w-3 h-3 text-white" />
             <span>360° VIEW</span>
           </div>
         )}
 
         {/* Traditional Heritage Tag */}
         {product.traditionalArtTag && (
-          <div className="absolute bottom-3 left-3 px-2 py-0.5 rounded-md bg-amber-950/95 border border-amber-500/50 text-amber-300 text-[10px] font-semibold flex items-center gap-1">
-            <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+          <div className="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-md bg-[#E99D1A] text-[#1E1B18] border-2 border-[#1E1B18] text-[10px] font-black shadow-[1.5px_1.5px_0px_#1E1B18] flex items-center gap-1">
+            <Sparkles className="w-2.5 h-2.5 text-[#C8331E]" />
             <span>{product.traditionalArtTag}</span>
           </div>
         )}
 
         {/* Discount Badge */}
         {product.discountPercent ? (
-          <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-rose-600 font-black text-white text-[10px] shadow-md">
+          <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-[#C8331E] border-2 border-[#1E1B18] font-black text-white text-[10px] shadow-[2px_2px_0px_#1E1B18]">
             -{product.discountPercent}%
           </div>
         ) : null}
@@ -66,54 +64,64 @@ export default function ProductCard({ product, onSelect, onAddToCart, lang }: Pr
         <div>
           {/* Category & Rating */}
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">
+            <span className="text-[10px] uppercase font-mono font-black tracking-wider text-[#F15A24]">
               {product.category}
             </span>
-            <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
-              <Star className="w-3 h-3 fill-amber-400" />
-              <span>{product.rating}</span>
-              <span className="text-slate-500 font-normal">({product.reviewCount})</span>
+            <div className="flex items-center gap-1 text-[#E99D1A] text-xs font-black">
+              <Star className="w-3 h-3 fill-[#E99D1A]" />
+              <span className="text-[#1E1B18]">{product.rating}</span>
+              <span className="text-[#1E1B18]/50 font-mono font-normal">({product.reviewCount})</span>
             </div>
           </div>
 
-          {/* Product Title */}
-          <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-1 mb-1">
+          {/* Product Title in Indian Serif */}
+          <h3 className="text-base font-black text-[#1E1B18] group-hover:text-[#F15A24] transition-colors line-clamp-1 mb-1 font-desi-serif">
             {lang === 'ml' && product.nameMl ? product.nameMl : product.name}
           </h3>
 
-          <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-[#1E1B18]/70 line-clamp-2 leading-relaxed font-medium">
             {lang === 'ml' && product.descriptionMl ? product.descriptionMl : product.description}
           </p>
         </div>
 
-        {/* Pricing & Quick Add */}
-        <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+        {/* Pricing & Chunky Quick Add */}
+        <div className="mt-4 pt-3 border-t border-[#1E1B18]/20 flex items-center justify-between">
           <div>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-extrabold text-amber-400">
+              <span className="text-lg font-black text-[#1E1B18]">
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
               {product.originalPrice && (
-                <span className="text-xs text-slate-500 line-through">
+                <span className="text-xs text-[#1E1B18]/50 line-through font-mono">
                   ₹{product.originalPrice.toLocaleString('en-IN')}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-emerald-400 font-semibold block">
-              {product.stock > 0 ? `${product.stock} in stock` : 'Sold out'}
+            <span className="text-[10px] text-[#19857B] font-mono font-black">
+              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
             </span>
           </div>
 
           <button
             onClick={handleAdd}
-            className={`p-2.5 rounded-xl font-bold transition-all flex items-center justify-center ${
+            className={`px-3 py-2 rounded-xl font-black text-xs border-2 border-[#1E1B18] transition-all flex items-center gap-1.5 cursor-pointer ${
               added
-                ? 'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.5)]'
-                : 'bg-amber-500 hover:bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.3)]'
+                ? 'bg-[#19857B] text-white shadow-[1px_1px_0px_#1E1B18]'
+                : 'bg-[#F15A24] text-white shadow-[2.5px_2.5px_0px_#1E1B18] hover:bg-[#E04D18] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1E1B18]'
             }`}
-            title="Add to cart"
+            title="Add to Cart"
           >
-            {added ? <Check className="w-4 h-4 stroke-[3]" /> : <Plus className="w-4 h-4 stroke-[3]" />}
+            {added ? (
+              <>
+                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                <span>{lang === 'ml' ? 'ചേർത്തു' : 'Added'}</span>
+              </>
+            ) : (
+              <>
+                <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                <span>{lang === 'ml' ? 'സഞ്ചിയിൽ' : 'Add'}</span>
+              </>
+            )}
           </button>
         </div>
       </div>

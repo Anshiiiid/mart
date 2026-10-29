@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { Product } from '@/lib/types';
-import { RotateCw, Sparkles, Layers, Sliders, ShieldCheck, Eye, ShoppingBag, Check } from 'lucide-react';
+import { RotateCw, Sparkles, Layers, Sliders, ShieldCheck, Eye, ShoppingBag, Check, Compass } from 'lucide-react';
 
 interface Interactive3DShowcaseProps {
   products: Product[];
@@ -11,11 +11,9 @@ interface Interactive3DShowcaseProps {
 }
 
 export default function Interactive3DShowcase({ products, onAddToCart, lang }: Interactive3DShowcaseProps) {
-  // Pick products that have 3D available
   const showcaseProducts = products.filter((p) => p.is3dAvailable);
   const [selectedProduct, setSelectedProduct] = useState<Product>(showcaseProducts[0] || products[0]);
   const [rotationAngle, setRotationAngle] = useState(45);
-  const [isHologram, setIsHologram] = useState(false);
   const [activeHotspot, setActiveHotspot] = useState<number | null>(0);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -33,9 +31,9 @@ export default function Interactive3DShowcase({ products, onAddToCart, lang }: I
     },
     {
       id: 1,
-      title: 'Holographic Haptics',
-      titleMl: 'ടച്ച് സെൻസർ',
-      desc: 'OLED touch display with micro-vibration feedback.',
+      title: 'Ergonomic Touch',
+      titleMl: 'സ്മാർട്ട് സെൻസർ',
+      desc: 'Intelligent touch controls with tactile feedback.',
       descMl: 'മൈക്രോ-ഹാപ്റ്റിക് റെസ്‌പോൺസുള്ള ടച്ച് കൺട്രോൾ.',
       x: '52%',
       y: '22%',
@@ -67,26 +65,20 @@ export default function Interactive3DShowcase({ products, onAddToCart, lang }: I
   };
 
   return (
-    <section id="showcase" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
-      {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none" />
-
+    <section id="showcase" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative select-none">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-14">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-3">
-          <Eye className="w-3.5 h-3.5 text-cyan-400" />
-          <span>{lang === 'ml' ? '360° 3D ഇൻസ്പെക്ഷൻ ലബോറട്ടറി' : '360° INTERACTIVE TURNTABLE'}</span>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#19857B] text-white border-2 border-[#1E1B18] shadow-[2.5px_2.5px_0px_#1E1B18] text-xs font-black uppercase tracking-widest mb-4">
+          <Compass className="w-4 h-4 text-white animate-spin-slow" />
+          <span>{lang === 'ml' ? '360° ദേശി കരവിരുദ് കാർഖാന' : '360° ARTISAN WORKSHOP (KARKHANA)'}</span>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-serif mb-4">
-          <span className="block">{lang === 'ml' ? '3D മോഡൽ റൊട്ടേഷൻ' : 'Experience In 360 Degrees'}</span>
-          <span className="cyber-gradient-text text-2xl sm:text-3xl block mt-1">
-            {lang === 'ml' ? 'സ്പിൻ ചെയ്ത് കരവിരുതും സാങ്കേതികതയും പരിശോധിക്കുക' : 'Drag or Slide to Inspect Every Angle'}
-          </span>
+        <h2 className="text-4xl sm:text-6xl font-black text-[#1E1B18] font-desi-display lowercase mb-3">
+          <span>{lang === 'ml' ? '3D മോഡൽ പരിശോധിക്കുക' : 'rotate & inspect every detail'}</span>
         </h2>
-        <p className="text-sm sm:text-base text-slate-400">
+        <p className="text-sm sm:text-base font-medium text-[#1E1B18]/80 max-w-xl mx-auto">
           {lang === 'ml'
-            ? 'ഓരോ ഉൽപ്പന്നത്തിന്റെയും പരമ്പരാഗത കരവിരുതും നിർമ്മാണ സാങ്കേതികതയും 360 ഡിഗ്രിയിൽ നേരിട്ട് പരിശോധിക്കാം.'
-            : 'Inspect handcrafted textures, temple brass engravings, and internal components with full rotational freedom.'}
+            ? 'മൗസ് ഡ്രാഗ് ചെയ്ത് 360 ഡിഗ്രിയിൽ ഉൽപ്പന്നങ്ങൾ പരിശോധിക്കുക. പാരമ്പര്യ പിച്ചള കൊത്തുപണികളും ഘടനയും നേരിട്ട് കാണാം.'
+            : 'Click and drag the workshop turntable to inspect handcrafted metalwork, filigree handles, and artisan joinery.'}
         </p>
       </div>
 
@@ -94,8 +86,8 @@ export default function Interactive3DShowcase({ products, onAddToCart, lang }: I
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left: Product Selector Tabs */}
         <div className="lg:col-span-3 flex flex-col gap-3">
-          <span className="text-xs uppercase font-mono tracking-widest text-slate-400 px-1">
-            {lang === 'ml' ? 'തിരഞ്ഞെടുക്കാവുന്ന മോഡലുകൾ' : 'Select Prototype'}
+          <span className="text-xs uppercase font-mono font-black tracking-widest text-[#F15A24] px-1">
+            {lang === 'ml' ? 'തിരഞ്ഞെടുക്കാവുന്ന മാസ്റ്റർപീസുകൾ' : 'Select Masterpiece'}
           </span>
           {showcaseProducts.map((p) => {
             const isSelected = p.id === selectedProduct.id;
@@ -103,51 +95,26 @@ export default function Interactive3DShowcase({ products, onAddToCart, lang }: I
               <button
                 key={p.id}
                 onClick={() => setSelectedProduct(p)}
-                className={`p-3.5 rounded-xl text-left transition-all border flex items-center gap-3 ${
+                className={`p-3.5 rounded-2xl text-left transition-all border-2 border-[#1E1B18] flex items-center gap-3 cursor-pointer ${
                   isSelected
-                    ? 'bg-[#1D1737] border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.3)]'
-                    : 'bg-[#100D1F]/60 border-slate-800 hover:border-slate-700 text-slate-400'
+                    ? 'bg-[#FFFDF7] shadow-[4px_4px_0px_#1E1B18] translate-x-1 ring-2 ring-[#F15A24]'
+                    : 'bg-[#FFFDF7]/60 hover:bg-[#FFFDF7] shadow-[2px_2px_0px_#1E1B18] text-[#1E1B18]/70'
                 }`}
               >
-                <div className="w-12 h-12 rounded-lg bg-black/50 overflow-hidden flex-shrink-0 border border-slate-700">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                <div className="w-12 h-12 rounded-xl bg-[#FAF4E6] border border-[#1E1B18] p-1 overflow-hidden shrink-0">
+                  <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <h4 className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-slate-300'}`}>
+                  <h4 className="text-xs font-black text-[#1E1B18] font-desi-serif">
                     {lang === 'ml' && p.nameMl ? p.nameMl : p.name}
                   </h4>
-                  <span className="text-[11px] text-amber-400 font-black">
+                  <span className="text-xs text-[#F15A24] font-black font-mono">
                     ₹{p.price.toLocaleString('en-IN')}
                   </span>
                 </div>
               </button>
             );
           })}
-
-          {/* Hologram Wireframe Mode Toggle */}
-          <div className="mt-4 p-4 rounded-xl glass-panel border border-cyan-500/20">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{lang === 'ml' ? 'ഹോളോഗ്രാം മോഡ്' : 'Hologram Shader'}</span>
-              </span>
-              <button
-                onClick={() => setIsHologram(!isHologram)}
-                className={`w-11 h-6 rounded-full transition-colors p-0.5 ${
-                  isHologram ? 'bg-cyan-500' : 'bg-slate-800'
-                }`}
-              >
-                <div
-                  className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                    isHologram ? 'translate-x-5' : 'translate-x-0'
-                  }`}
-                />
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 mt-2">
-              {isHologram ? 'Holographic schematic activated' : 'Realistic studio lighting'}
-            </p>
-          </div>
         </div>
 
         {/* Center: 3D Turntable Stage */}
@@ -155,14 +122,10 @@ export default function Interactive3DShowcase({ products, onAddToCart, lang }: I
           <div
             ref={containerRef}
             onMouseMove={handleDrag}
-            className={`relative w-full aspect-square max-w-[480px] rounded-3xl border-2 transition-all select-none cursor-ew-resize overflow-hidden flex items-center justify-center ${
-              isHologram
-                ? 'bg-[#08182B] border-cyan-400 shadow-[0_0_50px_rgba(6,182,212,0.4)]'
-                : 'bg-gradient-to-b from-[#181329] via-[#0E0B1A] to-[#07050E] border-amber-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)]'
-            }`}
+            className="relative w-full aspect-square max-w-[480px] rounded-3xl border-3 border-[#1E1B18] bg-[#FFFDF7] shadow-[8px_8px_0px_#1E1B18] select-none cursor-ew-resize overflow-hidden flex items-center justify-center p-6"
           >
             {/* Turntable Floor Ring (3D perspective) */}
-            <div className="absolute bottom-6 w-72 h-14 rounded-[100%] border-2 border-amber-500/30 bg-amber-500/5 shadow-[0_0_30px_rgba(245,158,11,0.2)] transform -rotate-x-60 pointer-events-none" />
+            <div className="absolute bottom-8 w-72 h-14 rounded-[100%] border-2 border-[#1E1B18] bg-[#E99D1A]/20 transform -rotate-x-60 pointer-events-none" />
 
             {/* Rotating Product Asset Container */}
             <div
@@ -175,123 +138,82 @@ export default function Interactive3DShowcase({ products, onAddToCart, lang }: I
               <img
                 src={selectedProduct.image}
                 alt={selectedProduct.name}
-                className={`max-w-full max-h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)] transition-all ${
-                  isHologram ? 'hue-rotate-180 brightness-125 contrast-150 invert-[0.1]' : ''
-                }`}
-                draggable={false}
+                className="max-w-full max-h-full object-contain filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.25)]"
               />
+
+              {/* Interactive Hotspot Pins */}
+              {hotspots.map((hs) => (
+                <button
+                  key={hs.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveHotspot(hs.id);
+                  }}
+                  className={`absolute w-7 h-7 rounded-full border-2 border-[#1E1B18] flex items-center justify-center text-xs font-black transition-all cursor-pointer ${
+                    activeHotspot === hs.id
+                      ? 'bg-[#F15A24] text-white scale-125 shadow-[2px_2px_0px_#1E1B18]'
+                      : 'bg-[#E99D1A] text-[#1E1B18] hover:scale-110 shadow-sm'
+                  }`}
+                  style={{ top: hs.y, left: hs.x }}
+                >
+                  {hs.id + 1}
+                </button>
+              ))}
             </div>
 
-            {/* Interactive Hotspots Pins */}
-            {hotspots.map((hs) => (
-              <button
-                key={hs.id}
-                onClick={() => setActiveHotspot(hs.id)}
-                className={`absolute w-7 h-7 rounded-full flex items-center justify-center transition-transform ${
-                  activeHotspot === hs.id
-                    ? 'scale-125 bg-amber-400 text-black shadow-[0_0_15px_rgba(245,158,11,0.9)] z-20'
-                    : 'bg-cyan-500/80 text-black shadow-[0_0_10px_rgba(6,182,212,0.6)] animate-pulse'
-                }`}
-                style={{ top: hs.y, left: hs.x }}
-                title={hs.title}
-              >
-                <span className="text-[10px] font-black">{hs.id + 1}</span>
-              </button>
-            ))}
-
-            {/* Rotation Angle HUD Badge */}
-            <div className="absolute top-4 left-4 px-2.5 py-1 rounded-md bg-black/70 border border-slate-700 text-[10px] font-mono text-cyan-300 flex items-center gap-1.5">
-              <RotateCw className="w-3 h-3 text-cyan-400 animate-spin" />
-              <span>Y-AXIS: {rotationAngle}°</span>
+            {/* Turntable Slider Prompt at Bottom */}
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-bold text-[#1E1B18] font-mono px-3 py-1.5 rounded-full bg-[#FAF4E6] border-2 border-[#1E1B18]">
+              <span className="flex items-center gap-1">
+                <RotateCw className="w-3.5 h-3.5 text-[#F15A24] animate-spin-slow" />
+                <span>{rotationAngle}°</span>
+              </span>
+              <span className="text-[11px] text-[#C8331E]">
+                {lang === 'ml' ? 'വലത്തോട്ടും ഇടത്തോട്ടും ഡ്രാഗ് ചെയ്യുക' : 'Drag left / right to rotate'}
+              </span>
             </div>
-
-            <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-black/70 border border-slate-700 text-[10px] font-mono text-amber-300">
-              DRAG TO ROTATE
-            </div>
-          </div>
-
-          {/* Manual Rotation Slider */}
-          <div className="w-full max-w-md mt-6 flex items-center gap-4 px-4">
-            <span className="text-xs text-slate-400 font-mono">0°</span>
-            <input
-              type="range"
-              min="0"
-              max="360"
-              value={rotationAngle}
-              onChange={(e) => setRotationAngle(Number(e.target.value))}
-              className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400"
-            />
-            <span className="text-xs text-slate-400 font-mono">360°</span>
           </div>
         </div>
 
-        {/* Right: Active Hotspot Deep-Dive & Action */}
-        <div className="lg:col-span-3 flex flex-col gap-4">
-          <div className="p-6 rounded-2xl glass-card border border-amber-500/30">
-            <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-4 h-4" />
-              <span>{lang === 'ml' ? 'കരവിരുതിന്റെ വിശദാംശങ്ങൾ' : 'Inspected Element'}</span>
-            </div>
-
-            {activeHotspot !== null && hotspots[activeHotspot] ? (
-              <div>
-                <h4 className="text-base font-bold text-white mb-1">
-                  {lang === 'ml' ? hotspots[activeHotspot].titleMl : hotspots[activeHotspot].title}
-                </h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  {lang === 'ml' ? hotspots[activeHotspot].descMl : hotspots[activeHotspot].desc}
-                </p>
-              </div>
-            ) : null}
-
-            {/* Specs Summary */}
-            <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col gap-2">
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Traditional Element:</span>
-                <span className="text-amber-300 font-semibold">{selectedProduct.traditionalArtTag}</span>
-              </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Inventory Status:</span>
-                <span className="text-emerald-400 font-semibold">{selectedProduct.stock} Units Ready</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Buy Card */}
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#1C1533] to-[#100C1F] border border-amber-500/40">
-            <div className="flex items-baseline justify-between mb-3">
-              <div>
-                <span className="text-xl font-black text-amber-400">
-                  ₹{selectedProduct.price.toLocaleString('en-IN')}
-                </span>
-                {selectedProduct.originalPrice && (
-                  <span className="text-xs text-slate-500 line-through ml-2">
-                    ₹{selectedProduct.originalPrice.toLocaleString('en-IN')}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">
-                Exclusive
+        {/* Right: Craftsmanship Hotspot Inspector Card */}
+        <div className="lg:col-span-3">
+          <div className="p-6 rounded-3xl bg-[#FFFDF7] border-2 border-[#1E1B18] shadow-[4px_4px_0px_#1E1B18]">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-[#F15A24] text-white text-xs font-black flex items-center justify-center border border-[#1E1B18]">
+                {(activeHotspot ?? 0) + 1}
               </span>
+              <h4 className="text-base font-black text-[#1E1B18] font-desi-serif">
+                {lang === 'ml'
+                  ? hotspots[activeHotspot ?? 0]?.titleMl
+                  : hotspots[activeHotspot ?? 0]?.title}
+              </h4>
             </div>
+
+            <p className="text-xs text-[#1E1B18]/80 leading-relaxed font-medium mb-6">
+              {lang === 'ml'
+                ? hotspots[activeHotspot ?? 0]?.descMl
+                : hotspots[activeHotspot ?? 0]?.desc}
+            </p>
 
             <button
               onClick={handleAddToCart}
-              className={`w-full py-3.5 px-4 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-3 rounded-full font-black text-xs border-2 border-[#1E1B18] transition-all flex items-center justify-center gap-2 cursor-pointer ${
                 isAdded
-                  ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.5)]'
-                  : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black shadow-[0_0_25px_rgba(245,158,11,0.4)]'
+                  ? 'bg-[#19857B] text-white shadow-[1px_1px_0px_#1E1B18]'
+                  : 'bg-[#F15A24] text-white shadow-[3px_3px_0px_#1E1B18] hover:bg-[#E04D18]'
               }`}
             >
               {isAdded ? (
                 <>
                   <Check className="w-4 h-4 stroke-[3]" />
-                  <span>{lang === 'ml' ? 'കാർട്ടിൽ ചേർത്തു' : 'Added to Cart!'}</span>
+                  <span>{lang === 'ml' ? 'സഞ്ചിയിൽ ചേർത്തു!' : 'Added to Potli!'}</span>
                 </>
               ) : (
                 <>
                   <ShoppingBag className="w-4 h-4" />
-                  <span>{lang === 'ml' ? 'കാർട്ടിലേക്ക് ചേർക്കുക' : 'Add To Cart Now'}</span>
+                  <span>
+                    {lang === 'ml' ? 'ഇത് സഞ്ചിയിൽ വാങ്ങുക' : 'Buy This Item'} (₹
+                    {selectedProduct.price.toLocaleString('en-IN')})
+                  </span>
                 </>
               )}
             </button>

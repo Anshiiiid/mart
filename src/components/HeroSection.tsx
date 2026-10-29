@@ -256,27 +256,27 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
     <div
       ref={containerRef}
       id="hero-scroll-container"
-      className="relative h-[260vh] sm:h-[280vh] bg-[#09070F] z-10"
+      className="relative h-[260vh] sm:h-[280vh] bg-[#14101E] z-10"
     >
-      {/* Sticky Fullscreen Viewport with Dynamic Viewport Height (prevents mobile URL bar jump) */}
+      {/* Sticky Fullscreen Viewport with Dynamic Viewport Height */}
       <div
-        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-[#09070F] select-none"
+        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-[#14101E] select-none"
         style={{ opacity: overallOpacity }}
       >
         {/* Loading Skeleton / Placeholder before video streams */}
         {!isVideoReady && (
-          <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-[#09070F]">
+          <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-[#FAF4E6]">
             <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-              <div className="absolute inset-0 rounded-full border-2 border-amber-500/20 animate-ping"></div>
-              <div className="w-full h-full rounded-full border-2 border-amber-500 border-t-transparent animate-spin"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-[#F15A24]/30 animate-ping"></div>
+              <div className="w-full h-full rounded-full border-4 border-[#F15A24] border-t-transparent animate-spin"></div>
             </div>
-            <p className="mt-4 text-xs tracking-widest uppercase font-mono text-amber-400/80 animate-pulse">
-              {lang === 'ml' ? 'അങ്ങാടി ഒരുങ്ങുന്നു...' : 'Loading Cyber Bazaar...'}
+            <p className="mt-4 text-xs tracking-widest uppercase font-mono font-bold text-[#1E1B18]">
+              {lang === 'ml' ? 'അങ്ങാടി ഒരുങ്ങുന്നു...' : 'Opening Indian Bazaar...'}
             </p>
           </div>
         )}
 
-        {/* Dual-responsive Video Layer: Native HTML5 <source> matching phone portrait vs desktop landscape */}
+        {/* Dual-responsive Video Layer */}
         <video
           ref={videoRef}
           preload="auto"
@@ -288,69 +288,66 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
             isVideoReady ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          {/* Mobile phone portrait stream (720x1280) */}
           <source
             src="/scroll-mobile.mp4"
             type="video/mp4"
             media="(max-width: 767px), (orientation: portrait)"
           />
-          {/* Desktop & laptop widescreen stream (1280x720) */}
           <source
             src="/scroll-desktop.mp4"
             type="video/mp4"
           />
         </video>
 
-        {/* Top Vignette & Ambient Atmosphere */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#09070F]/80 via-[#09070F]/30 to-transparent pointer-events-none" />
+        {/* Ambient Warm Indian Festival Vignette */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/80 via-black/30 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#FAF4E6] via-[#FAF4E6]/80 to-transparent pointer-events-none" />
 
-        {/* Bottom edge gradient blend */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#09070F] via-[#09070F]/60 to-transparent pointer-events-none" />
-
-        {/* Intro Overlay: Welcomes user and prompts scroll; smoothly dissolves as user scrolls */}
+        {/* Intro Overlay: Indian Desimart Marquee */}
         {introFade > 0.01 && (
           <div
             className="absolute inset-0 flex flex-col items-center justify-between p-6 sm:p-10 pointer-events-none transition-opacity duration-200"
             style={{ opacity: introFade }}
           >
-            {/* Top Badge */}
-            <div className="mt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/30 text-amber-300 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
-              <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase font-mono">
-                {lang === 'ml' ? 'ധമാക്ക ക്ലിയറൻസ് സെയിൽ • സ്പെഷ്യൽ ഓഫറുകൾ' : 'DHAMAKA CLEARANCE SALE • LIVE'}
+            {/* Top Desi Postage Badge */}
+            <div className="mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF4E6] border-2 border-[#1E1B18] shadow-[3px_3px_0px_#1E1B18] text-[#1E1B18]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#F15A24] animate-ping" />
+              <span className="text-[11px] sm:text-xs font-black tracking-widest uppercase font-mono">
+                {lang === 'ml' ? 'ധമാക്ക ക്ലിയറൻസ് സെയിൽ • അർലോ & കോ.' : 'DHAMAKA CLEARANCE SALE • ARLO & CO.'}
               </span>
             </div>
 
-            {/* Center Title Card */}
-            <div className="text-center max-w-xl mx-auto px-4">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white font-serif uppercase drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
-                HATKE<span className="text-amber-400">.</span>HAAT
+            {/* Center Title Card in Curried Away / Banjara Style */}
+            <div className="text-center max-w-xl mx-auto px-4 bg-[#FFFDF7]/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl border-3 border-[#1E1B18] shadow-[6px_6px_0px_#1E1B18]">
+              <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#1E1B18] font-desi-display lowercase drop-shadow-sm">
+                hatke<span className="text-[#F15A24]">.</span>haat
               </h1>
-              <p className="mt-2 text-xs sm:text-sm md:text-base font-medium text-amber-200/90 tracking-wide drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+              <div className="w-16 h-1 bg-[#F15A24] mx-auto my-2 rounded-full" />
+              <p className="mt-1 text-sm sm:text-base font-bold text-[#C8331E] font-desi-serif tracking-wide">
                 {lang === 'ml'
-                  ? 'പരമ്പരാഗത കേരളീയ വിപണിയും ആധുനിക ടെക്നോളജിയും ഒന്നിക്കുന്ന ഇടം'
-                  : 'Indian Heritage Fused With Cyberpunk Innovation'}
+                  ? 'തനിമയാർന്ന ഇന്ത്യൻ കരവിരുതും ആധുനിക ദേശിമാർട്ടും'
+                  : 'Indian Heritage Fused With Handcrafted Life'}
               </p>
             </div>
 
             {/* Bottom Animated Scroll Cue */}
             <div className="mb-6 flex flex-col items-center gap-2">
-              <span className="text-[11px] sm:text-xs font-mono uppercase tracking-widest text-amber-300/90 font-semibold drop-shadow">
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-[#1E1B18] px-3 py-1 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] shadow-[2px_2px_0px_#1E1B18]">
                 {lang === 'ml' ? 'അങ്ങാടി കാണാൻ താഴേക്ക് സ്ക്രോൾ ചെയ്യുക' : 'Scroll down to enter market'}
               </span>
-              <div className="w-6 h-10 rounded-full border-2 border-amber-400/50 flex items-start justify-center p-1 bg-black/40 backdrop-blur-sm">
-                <div className="w-1.5 h-2.5 rounded-full bg-amber-400 animate-bounce" />
+              <div className="w-6 h-10 rounded-full border-2 border-[#1E1B18] flex items-start justify-center p-1 bg-[#FFFDF7] shadow-[2px_2px_0px_#1E1B18]">
+                <div className="w-1.5 h-2.5 rounded-full bg-[#F15A24] animate-bounce" />
               </div>
             </div>
           </div>
         )}
 
-        {/* Persistent Cyber HUD: Location indicator, Sound toggle & Skip button */}
+        {/* Persistent Desi HUD: Location indicator, Sound toggle & Skip button */}
         {progress > 0.05 && progress < 0.92 && (
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-auto">
             {/* Street location badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0E0B1A]/85 backdrop-blur-md border border-amber-500/30 text-amber-300 text-xs font-mono font-medium shadow-lg">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFDF7] border-2 border-[#1E1B18] text-[#1E1B18] text-xs font-mono font-bold shadow-[2px_2px_0px_#1E1B18]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#F15A24] animate-pulse" />
               <span>{getLocationLabel()}</span>
             </div>
 
@@ -359,15 +356,15 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
               <button
                 onClick={toggleSound}
                 aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
-                className="p-2 rounded-full bg-[#0E0B1A]/85 backdrop-blur-md border border-amber-500/30 text-amber-300 hover:text-white hover:border-amber-400 transition-colors shadow-lg"
+                className="p-2 rounded-full bg-[#FFFDF7] border-2 border-[#1E1B18] text-[#1E1B18] hover:bg-[#FAF4E6] shadow-[2px_2px_0px_#1E1B18] transition-all cursor-pointer"
                 title={isMuted ? 'Sound Off (Click to turn on)' : 'Sound On'}
               >
-                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+                {isMuted ? <VolumeX className="w-4 h-4 text-[#1E1B18]" /> : <Volume2 className="w-4 h-4 text-[#F15A24]" />}
               </button>
 
               <button
                 onClick={handleSkipToStore}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold tracking-wide transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)]"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F15A24] border-2 border-[#1E1B18] text-white text-xs font-black tracking-wide shadow-[2px_2px_0px_#1E1B18] hover:bg-[#E04D18] active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>{lang === 'ml' ? 'ഷോപ്പിലേക്ക്' : 'Skip to Store'}</span>
@@ -377,16 +374,40 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
         )}
 
         {/* Minimal Bottom Progress Line */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/40 backdrop-blur-sm z-20">
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#1E1B18] z-20">
           <div
-            className="h-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-all duration-75 ease-out"
+            className="h-full bg-[#F15A24] transition-all duration-75 ease-out"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
 
+        {/* Cinematic Store Entrance Portal at the end of video */}
+        {exitFade > 0.05 && (
+          <div
+            className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center transition-opacity duration-200 z-10 bg-[#FAF4E6]"
+            style={{ opacity: exitFade }}
+          >
+            <div className="relative text-center px-4 transform -translate-y-4 max-w-lg bg-[#FFFDF7] p-8 rounded-3xl border-3 border-[#1E1B18] shadow-[8px_8px_0px_#1E1B18]">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] text-[#1E1B18] text-xs font-black tracking-widest uppercase mb-3 shadow-[2px_2px_0px_#1E1B18]">
+                <Sparkles className="w-4 h-4 text-[#1E1B18]" />
+                <span>{lang === 'ml' ? 'അർലോ & കോ. സ്റ്റോറിലേക്ക് സ്വാഗതം' : 'ENTERING ARLO & CO. STORE'}</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-[#1E1B18] font-desi-display lowercase">
+                the 9 sacred craft stamps
+              </h2>
+              <p className="mt-2 text-xs sm:text-sm text-[#C8331E] font-bold font-mono">
+                {lang === 'ml' ? 'താഴേക്ക് സ്ക്രോൾ ചെയ്ത് 9 വിഭാഗങ്ങൾ കാണുക' : 'Scroll down to explore categories'}
+              </p>
+              <div className="mt-4 flex justify-center">
+                <ChevronDown className="w-6 h-6 text-[#F15A24] animate-bounce" />
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Cinematic Fade-out mask directly dissolving into Category section at the end of scroll */}
         <div
-          className="absolute inset-0 bg-[#09070F] pointer-events-none transition-opacity duration-150"
+          className="absolute inset-0 bg-[#FAF4E6] pointer-events-none transition-opacity duration-150"
           style={{ opacity: exitFade }}
         />
       </div>

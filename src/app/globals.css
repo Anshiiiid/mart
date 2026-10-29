@@ -1,105 +1,213 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rozha+One&family=Shrikhand&family=Yatra+One&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #09070F;
-  --foreground: #F8FAFC;
-  --gold-glow: #F59E0B;
-  --mandala-amber: #D97706;
-  --temple-ruby: #E11D48;
-  --cyber-cyan: #06B6D4;
+  --background: #FAF4E6;
+  --foreground: #1E1B18;
+  --cream-card: #FFFFFF;
+  --terracotta: #D4421E;
+  --marigold: #F15A24;
+  --turmeric: #E99D1A;
+  --athangudi-teal: #19857B;
+  --peacock: #234982;
+  --jamun: #562142;
+  --kraft: #F2E3C6;
+  --ink-border: #1E1B18;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-heading: 'Cinzel Decorative', serif;
+  --font-heading: 'Shrikhand', 'Rozha One', serif;
+  --font-serif: 'Rozha One', 'Yatra One', serif;
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #FAF4E6;
+  color: #1E1B18;
   font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
-  selection-background-color: #F59E0B;
-  selection-color: #000000;
+  selection-background-color: #F15A24;
+  selection-color: #FFFFFF;
 }
 
-/* Custom Scrollbar */
+/* Custom Desi Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-track {
-  background: #09070f;
+  background: #FAF4E6;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #d97706, #78350f);
-  border-radius: 4px;
+  background: #F15A24;
+  border: 2px solid #1E1B18;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #f59e0b;
+  background: #D4421E;
 }
 
-/* Glassmorphism Classes */
-.glass-panel {
-  background: rgba(18, 14, 29, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(245, 158, 11, 0.2);
+/* ============================================================ */
+/* AUTHENTIC INDIAN DESIMART UI/UX STYLING (CURRIED AWAY / BANJARA) */
+/* ============================================================ */
+
+/* Desi Chunky Tactile Card with Offset Hard Shadow */
+.desi-card {
+  background-color: #FFFFFF;
+  border: 2px solid #1E1B18;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0px #1E1B18;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-panel-hover:hover {
-  border-color: rgba(245, 158, 11, 0.5);
-  box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.25);
+.desi-card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #1E1B18;
 }
 
-.glass-card {
-  background: linear-gradient(135deg, rgba(26, 20, 41, 0.8) 0%, rgba(13, 10, 23, 0.9) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 215, 0, 0.15);
+/* Vintage Postage Stamp Scalloped Card */
+.desi-stamp {
+  background-color: #FFFDF7;
+  border: 2px dashed #1E1B18;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0px rgba(30, 27, 24, 0.12);
+  position: relative;
+  transition: all 0.25s ease;
 }
 
-/* Cyber-Traditional Neon & Glow Effects */
-.glow-gold {
-  filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+.desi-stamp:hover {
+  border-color: #F15A24;
+  transform: translateY(-4px);
+  box-shadow: 6px 6px 0px #1E1B18;
 }
 
-.glow-cyan {
-  filter: drop-shadow(0 0 16px rgba(6, 182, 212, 0.6));
+/* Serrated Postage Stamp Edge (Perforations) */
+.stamp-perforations {
+  background-image: radial-gradient(transparent 0, transparent 4px, #FAF4E6 4px);
+  background-size: 14px 14px;
 }
 
-.glow-ruby {
-  filter: drop-shadow(0 0 16px rgba(225, 29, 72, 0.6));
+/* Chunky Desi Buttons with Offset Shadow */
+.desi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  border: 2px solid #1E1B18;
+  border-radius: 9999px;
+  box-shadow: 3px 3px 0px #1E1B18;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
 }
 
-.gold-gradient-text {
-  background: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 30%, #F59E0B 70%, #B45309 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.desi-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #1E1B18;
 }
 
-.cyber-gradient-text {
-  background: linear-gradient(135deg, #A5F3FC 0%, #06B6D4 50%, #3B82F6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.desi-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #1E1B18;
 }
 
-.ruby-gradient-text {
-  background: linear-gradient(135deg, #FECDD3 0%, #FB7185 50%, #E11D48 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.desi-btn-marigold {
+  background-color: #F15A24;
+  color: #FFFFFF;
 }
 
-/* Indian Architectural Arch Mask */
-.temple-arch-top {
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
+.desi-btn-marigold:hover {
+  background-color: #E04D18;
 }
 
-/* Subtle Pulsing / Rotating Mandala Keyframes */
-@keyframes spin-slow {
+.desi-btn-turmeric {
+  background-color: #E99D1A;
+  color: #1E1B18;
+}
+
+.desi-btn-turmeric:hover {
+  background-color: #D68D12;
+}
+
+.desi-btn-cream {
+  background-color: #FAF4E6;
+  color: #1E1B18;
+}
+
+.desi-btn-cream:hover {
+  background-color: #F2E7D0;
+}
+
+.desi-btn-teal {
+  background-color: #19857B;
+  color: #FFFFFF;
+}
+
+.desi-btn-teal:hover {
+  background-color: #136F66;
+}
+
+/* Authentic Athangudi Tile Border Strip */
+.athangudi-pattern {
+  background-color: #E99D1A;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #F15A24 0,
+    #F15A24 10px,
+    #E99D1A 10px,
+    #E99D1A 20px
+  );
+}
+
+/* Vintage Postmark Stamp Badge */
+.postmark-badge {
+  border: 2px solid #C8331E;
+  color: #C8331E;
+  border-radius: 9999px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transform: rotate(-4deg);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+}
+
+/* Vintage Indian Typography */
+.font-desi-display {
+  font-family: 'Shrikhand', cursive;
+}
+
+.font-desi-serif {
+  font-family: 'Rozha One', 'Yatra One', serif;
+}
+
+/* Sunburst Corners (Banjara / Curried Away style) */
+.sunburst-motif {
+  background: radial-gradient(circle, #F15A24 20%, transparent 20%),
+              radial-gradient(circle, #E99D1A 20%, transparent 20%);
+  background-size: 16px 16px;
+}
+
+/* Animations */
+@keyframes pulseGentle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+.animate-pulse-gentle {
+  animation: pulseGentle 2.5s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
   from {
     transform: rotate(0deg);
   }
@@ -109,23 +217,9 @@ body {
 }
 
 .animate-spin-slow {
-  animation: spin-slow 60s linear infinite;
+  animation: spinSlow 30s linear infinite;
 }
 
-@keyframes float-gentle {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.animate-float {
-  animation: float-gentle 4s ease-in-out infinite;
-}
-
-/* Interactive Folder Tab styling */
-.folder-tab {
-  clip-path: polygon(0% 100%, 0% 15px, 15px 0%, calc(100% - 25px) 0%, 100% 15px, 100% 100%);
+html {
+  scroll-behavior: smooth;
 }

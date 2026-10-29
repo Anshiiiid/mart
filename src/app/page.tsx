@@ -60,6 +60,27 @@ export default function HomePage() {
     } catch (e) {
       // ignore
     }
+
+    // Scroll reveal observer for smooth page-wide section animations
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            entry.target.classList.remove('opacity-0', 'translate-y-8');
+          }
+        });
+      },
+      { threshold: 0.06, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    sections.forEach((s) => {
+      s.classList.add('transition-all', 'duration-700', 'ease-out');
+      observer.observe(s);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   // Sync cart to localStorage
@@ -141,7 +162,7 @@ export default function HomePage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#09070F] text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#FAF4E6] text-[#1E1B18] flex flex-col font-sans">
       <main className="flex-1">
         {/* 1. Fullscreen Hero Section with Scroll-Driven Video Scrubbing and Smooth Exit (True 100vw x 100vh) */}
         <HeroSection lang={lang} />
@@ -171,17 +192,17 @@ export default function HomePage() {
           lang={lang}
         />
 
-        {/* 4. Complete Catalog & Cyber-Traditional Filtering Grid */}
+        {/* 4. Complete Catalog & Desi Filtering Grid */}
         <section id="products" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Header */}
+          {/* Header in Desimart Style */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-2">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] text-[#1E1B18] text-xs font-black uppercase tracking-wider mb-2">
                 <Grid className="w-3.5 h-3.5" />
-                <span>{lang === 'ml' ? 'സമ്പൂർണ്ണ കാറ്റലോഗ്' : 'CURATED COLLECTION'}</span>
+                <span>{lang === 'ml' ? 'സമ്പൂർണ്ണ കാറ്റലോഗ്' : 'CURATED DESI BAZAAR'}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-serif">
-                {lang === 'ml' ? 'എല്ലാ ഉൽപ്പന്നങ്ങളും' : 'Discover Neo-Heritage Products'}
+              <h2 className="text-3xl sm:text-5xl font-black text-[#1E1B18] font-desi-display lowercase">
+                {lang === 'ml' ? 'എല്ലാ ഉൽപ്പന്നങ്ങളും' : 'discover handcrafted treasures'}
               </h2>
             </div>
 
@@ -190,13 +211,13 @@ export default function HomePage() {
               {/* 3D toggle pill */}
               <button
                 onClick={() => setOnly3D(!only3D)}
-                className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-2 rounded-full text-xs font-black border-2 border-[#1E1B18] transition-all flex items-center gap-1.5 cursor-pointer ${
                   only3D
-                    ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
-                    : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
+                    ? 'bg-[#19857B] text-white shadow-[2px_2px_0px_#1E1B18]'
+                    : 'bg-[#FFFDF7] text-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] hover:bg-[#FAF4E6]'
                 }`}
               >
-                <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                <Eye className="w-3.5 h-3.5" />
                 <span>3D Ready Only</span>
               </button>
 
@@ -204,7 +225,7 @@ export default function HomePage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none"
+                className="bg-[#FFFDF7] border-2 border-[#1E1B18] rounded-full px-4 py-2 text-xs font-black text-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] focus:outline-none cursor-pointer"
               >
                 <option value="featured">Featured / Artisan Pick</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -214,14 +235,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Category Filter Pills */}
+          {/* Category Filter Pills in Chunky Desi Style */}
           <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none mb-8">
             <button
               onClick={() => setSelectedFilterCategory('all')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-full text-xs font-black border-2 border-[#1E1B18] whitespace-nowrap transition-all cursor-pointer ${
                 selectedFilterCategory === 'all'
-                  ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
-                  : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-[#F15A24] text-white shadow-[3px_3px_0px_#1E1B18]'
+                  : 'bg-[#FFFDF7] text-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] hover:bg-[#FAF4E6]'
               }`}
             >
               All Categories ({products.length})
@@ -230,10 +251,10 @@ export default function HomePage() {
               <button
                 key={c.id}
                 onClick={() => setSelectedFilterCategory(c.slug)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                className={`px-4 py-2 rounded-full text-xs font-black border-2 border-[#1E1B18] whitespace-nowrap transition-all cursor-pointer ${
                   selectedFilterCategory === c.slug
-                    ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
-                    : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                    ? 'bg-[#F15A24] text-white shadow-[3px_3px_0px_#1E1B18]'
+                    : 'bg-[#FFFDF7] text-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] hover:bg-[#FAF4E6]'
                 }`}
               >
                 {lang === 'ml' ? c.nameMl : c.name}
@@ -255,15 +276,15 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-24 glass-panel rounded-2xl border border-dashed border-amber-500/20">
-              <p className="text-slate-300 font-medium">No items match your selected filter or search.</p>
+            <div className="text-center py-24 bg-[#FFFDF7] rounded-3xl border-2 border-dashed border-[#1E1B18] shadow-[4px_4px_0px_#1E1B18]">
+              <p className="text-[#1E1B18] font-black text-base">No items match your selected filter or search.</p>
               <button
                 onClick={() => {
                   setSelectedFilterCategory('all');
                   setOnly3D(false);
                   setSearchQuery('');
                 }}
-                className="mt-4 px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 text-xs font-bold"
+                className="mt-4 desi-btn desi-btn-marigold text-xs px-5 py-2"
               >
                 Reset Filters
               </button>
@@ -271,50 +292,55 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* 5. Brand Heritage & Artisan Guild Story Section */}
-        <section id="story" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-amber-500/15">
-          <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 bg-gradient-to-r from-[#17112C] via-[#0E0B1B] to-[#120F26] border border-amber-500/30">
+        {/* 5. Brand Heritage & Artisan Guild Story Section (Banjara Style from Image 3) */}
+        <section id="story" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t-2 border-[#1E1B18]">
+          <div className="relative rounded-3xl p-8 sm:p-14 bg-[#FFFDF7] border-3 border-[#1E1B18] shadow-[8px_8px_0px_#1E1B18] overflow-hidden">
+            {/* Top Sunburst Rays in Corners */}
+            <div className="absolute top-4 left-4 text-[#F15A24] font-black text-xs font-mono">
+              ✹ ✹ ✹
+            </div>
+            <div className="absolute top-4 right-4 text-[#F15A24] font-black text-xs font-mono">
+              ✹ ✹ ✹
+            </div>
+
             <div className="max-w-2xl relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-4">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{lang === 'ml' ? 'ബ്രാൻഡ് വിഷൻ & പാരമ്പര്യം' : 'THE PHILOSOPHY OF HATKE HAAT'}</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] text-[#1E1B18] text-xs font-black mb-4 shadow-[2px_2px_0px_#1E1B18]">
+                <Sparkles className="w-3.5 h-3.5 text-[#C8331E]" />
+                <span>{lang === 'ml' ? 'ബ്രാൻഡ് വിഷൻ & പാരമ്പര്യം' : 'HANDCRAFTED LIFESTYLE & PHILOSOPHY'}</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-black font-serif text-white mb-6 leading-tight">
+              <h2 className="text-4xl sm:text-6xl font-black font-desi-display text-[#1E1B18] lowercase mb-6 leading-tight">
                 {lang === 'ml'
                   ? 'പരമ്പരാഗത കലയെ ഭാവി സാങ്കേതികതയുമായി ബന്ധിപ്പിക്കുന്നു'
-                  : 'Bridging Ancient Vedic Mastery With Cyber Precision'}
+                  : 'handcrafted lifestyle with authentic indian soul'}
               </h2>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-8">
+              <p className="text-sm sm:text-base text-[#1E1B18]/80 font-medium leading-relaxed mb-8">
                 {lang === 'ml'
                   ? 'നമ്മുടെ പരമ്പരാഗത കരകൗശല വിദഗ്ദ്ധരുടെ അറിവും ആധുനിക എഞ്ചിനീയറിംഗും ഒന്നിക്കുന്ന ഇടം. തനിമ ചോർന്നുപോകാതെ അടുത്ത തലമുറയിലേക്ക് എത്തിക്കുന്ന ഒരു ന്യൂ-ഏജ് ഷോപ്പിംഗ് അനുഭവം.'
-                  : 'Every item at Hatke Haat carries a lineage of centuries-old metal smithing, natural clay pottery, and sacred geometry, augmented by smart electronics, high-speed microcontrollers, and modern ergonomics.'}
+                  : 'Every piece at Hatke Haat carries a lineage of centuries-old metal smithing, natural clay pottery, Athangudi floor tiles, and sacred geometry, curated into a modern Desimart.'}
               </p>
               <div className="flex flex-wrap gap-4">
                 <a
                   href="/admin"
-                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.4)] flex items-center gap-2"
+                  className="desi-btn desi-btn-marigold px-6 py-3 text-xs uppercase tracking-wider"
                 >
-                  <ShieldCheck className="w-4 h-4" />
+                  <ShieldCheck className="w-4 h-4 text-white" />
                   <span>{lang === 'ml' ? 'അഡ്മിൻ പാനലിലേക്ക് കടക്കുക' : 'Access Admin Dashboard'}</span>
                 </a>
               </div>
             </div>
 
-            {/* Background Decorative Mandala Accent */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 opacity-15 pointer-events-none hidden md:block">
-              <svg viewBox="0 0 200 200" className="w-full h-full animate-spin-slow">
-                <circle cx="100" cy="100" r="90" fill="none" stroke="#F59E0B" strokeWidth="1" />
-                <circle cx="100" cy="100" r="70" fill="none" stroke="#F59E0B" strokeWidth="0.8" />
-                {Array.from({ length: 16 }).map((_, i) => (
-                  <polygon
-                    key={i}
-                    points="100,20 105,40 100,45 95,40"
-                    fill="none"
-                    stroke="#F59E0B"
-                    strokeWidth="0.6"
-                    transform={`rotate(${i * 22.5} 100 100)`}
-                  />
-                ))}
+            {/* Background 8-Petal Marigold Chakra Emblem (Reference Image 3) */}
+            <div className="absolute -right-12 -bottom-12 w-80 h-80 opacity-10 pointer-events-none hidden md:block">
+              <svg viewBox="0 0 24 24" className="w-full h-full fill-[#F15A24] animate-spin-slow">
+                <circle cx="12" cy="12" r="3.5" />
+                <circle cx="12" cy="4" r="2" />
+                <circle cx="12" cy="20" r="2" />
+                <circle cx="4" cy="12" r="2" />
+                <circle cx="20" cy="12" r="2" />
+                <circle cx="6.5" cy="6.5" r="1.8" />
+                <circle cx="17.5" cy="17.5" r="1.8" />
+                <circle cx="6.5" cy="17.5" r="1.8" />
+                <circle cx="17.5" cy="6.5" r="1.8" />
               </svg>
             </div>
           </div>
