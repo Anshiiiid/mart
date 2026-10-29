@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, Search, Sparkles, Layers, Menu, X, ArrowRight, Stamp } from 'lucide-react';
 import { CartItem } from '@/lib/types';
@@ -11,9 +11,13 @@ interface NavbarProps {
   onSearch: (query: string) => void;
   lang: 'en' | 'ml';
   onToggleLang: () => void;
+  initialVisible?: boolean;
 }
 
-export default function Navbar({ cart, onOpenCart, onSearch, lang, onToggleLang }: NavbarProps) {
+const Navbar = forwardRef<HTMLElement, NavbarProps>(function Navbar(
+  { cart, onOpenCart, onSearch, lang, onToggleLang, initialVisible = false },
+  ref
+) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,7 +30,16 @@ export default function Navbar({ cart, onOpenCart, onSearch, lang, onToggleLang 
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#FFFDF7] border-b-2 border-[#1E1B18] shadow-[0_4px_0px_rgba(30,27,24,0.06)] select-none">
+    <header
+      ref={ref}
+      id="main-top-navbar"
+      className="fixed top-0 left-0 right-0 z-50 w-full bg-[#FFFDF7] border-b-2 border-[#1E1B18] shadow-[0_4px_0px_rgba(30,27,24,0.06)] select-none will-change-transform will-change-opacity"
+      style={{
+        opacity: initialVisible ? 1 : 0,
+        pointerEvents: initialVisible ? 'auto' : 'none',
+        transform: initialVisible ? 'translateY(0px)' : 'translateY(-16px)',
+      }}
+    >
       {/* Top Desi Announcement Ticker */}
       <div className="bg-[#F15A24] text-white py-1.5 px-4 text-[11px] sm:text-xs font-bold tracking-wider border-b border-[#1E1B18] flex items-center justify-between overflow-hidden">
         <div className="flex items-center gap-2 mx-auto truncate font-mono">
@@ -138,7 +151,7 @@ export default function Navbar({ cart, onOpenCart, onSearch, lang, onToggleLang 
           {/* Language Switch Button */}
           <button
             onClick={onToggleLang}
-            className="px-3 py-1.5 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] text-[#1E1B18] text-xs font-black hover:bg-[#D68D12] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1E1B18] transition-all flex items-center gap-1"
+            className="px-3 py-1.5 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] shadow-[2px_2px_0px_#1E1B18] text-[#1E1B18] text-xs font-black hover:bg-[#D68D12] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_#1E1B18] transition-all flex items-center gap-1 cursor-pointer"
             title="Toggle Malayalam / English"
           >
             <span>{lang === 'en' ? 'മലയാളം' : 'English'}</span>
@@ -207,4 +220,6 @@ export default function Navbar({ cart, onOpenCart, onSearch, lang, onToggleLang 
       )}
     </header>
   );
-}
+});
+
+export default Navbar;

@@ -1,13 +1,22 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronDown, Volume2, VolumeX, Sparkles, ArrowDown, ShoppingBag } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ShoppingBag } from 'lucide-react';
+
+export interface HeroProgressInfo {
+  progress: number;
+  rawProgress: number;
+  scrollableDist: number;
+  scrollY: number;
+  isExited: boolean;
+}
 
 interface HeroSectionProps {
   lang?: 'en' | 'ml';
+  onProgressUpdate?: (info: HeroProgressInfo) => void;
 }
 
-export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
+export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -20,6 +29,7 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
   // Performance references for 60fps / 120fps scrubbing engine
   const targetProgressRef = useRef(0);
   const currentProgressRef = useRef(0);
+  const scrollableDistRef = useRef(0);
   const isSeekingRef = useRef(false);
   const rafIdRef = useRef<number | null>(null);
   const lastTargetTimeRef = useRef(0);
@@ -150,6 +160,7 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const scrollableDist = rect.height - window.innerHeight;
+      scrollableDistRef.current = scrollableDist;
       if (scrollableDist <= 0) return;
 
       const rawProgress = -rect.top / scrollableDist;
@@ -165,7 +176,7 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
     };
   }, []);
 
-  // 5. High-performance lerp & render loop (tuned separately for mobile touch and desktop trackpad)
+  // 5. High-performance lerp & render loop
   useEffect(() => {
     const loop = () => {
       const diff = targetProgressRef.current - currentProgressRef.current;
@@ -181,6 +192,17 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
       const p = currentProgressRef.current;
       setProgress(p);
 
+      // Notify parent page for in-place crossfade synchronization
+      if (onProgressUpdate) {
+        onProgressUpdate({
+          progress: p,
+          rawProgress: targetProgressRef.current,
+          scrollableDist: scrollableDistRef.current,
+          scrollY: window.scrollY,
+          isExited: p >= 0.999,
+        });
+      }
+
       const video = videoRef.current;
       if (video && video.duration && !isNaN(video.duration) && video.readyState >= 2) {
         // Safe target time clamped within duration
@@ -191,7 +213,6 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
 
         // Vsync-synchronized seek: only dispatch seek if decoder is not currently busy
         if (!isSeekingRef.current) {
-          // Half-frame threshold (0.02s) to prevent sub-frame micro-seeks
           if (Math.abs(video.currentTime - frameTime) >= 0.02) {
             isSeekingRef.current = true;
             video.currentTime = frameTime;
@@ -207,7 +228,7 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
     return () => {
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
-  }, [isMobileMode]);
+  }, [isMobileMode, onProgressUpdate]);
 
   // Audio mute/unmute handler
   const toggleSound = () => {
@@ -223,17 +244,19 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
 
   // Quick skip straight to store products
   const handleSkipToStore = () => {
-    const categorySection = document.getElementById('categories');
-    if (categorySection) {
-      categorySection.scrollIntoView({ behavior: 'smooth' });
+    const storeSection = document.getElementById('store-content') || document.getElementById('categories');
+    if (storeSection) {
+      storeSection.scrollIntoView({ behavior: 'smooth' });
     } else {
-      window.scrollTo({ top: window.innerHeight * 2.8, behavior: 'smooth' });
+      window.scrollTo({ top: window.innerHeight * 1.6, behavior: 'smooth' });
     }
   };
 
-  // Smooth exit fade into the Category Section as progress approaches 1.0 (85% -> 100%)
-  const exitFade = progress > 0.85 ? Math.min(1, (progress - 0.85) / 0.15) : 0;
-  const overallOpacity = 1 - exitFade;
+  // Smooth exit fade into the Category Section as progress approaches 1.0 (80% -> 100%)
+  const exitFade = progress > 0.80 ? Math.min(1, (progress - 0.80) / 0.20) : 0;
+  // Sinusoidal easing for smooth dissolve
+  const easeFade = exitFade < 0.5 ? 2 * exitFade * exitFade : 1 - Math.pow(-2 * exitFade + 2, 2) / 2;
+  const overallOpacity = Math.max(0, 1 - easeFade);
 
   // Intro UI fade out early in the scroll (0% -> 15%)
   const introFade = Math.max(0, 1 - progress / 0.15);
@@ -246,22 +269,27 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
     if (progress < 0.6) {
       return lang === 'ml' ? '🎪 അങ്ങാടി നിര • പഴം & സാധനങ്ങൾ' : '🎪 Fresh Stalls & Bazaar Row';
     }
-    if (progress < 0.85) {
+    if (progress < 0.80) {
       return lang === 'ml' ? '🐱 ആർലോ & കോ. സ്റ്റോർ മുൻവശം' : '🐱 Arlo & Co. Storefront';
     }
-    return lang === 'ml' ? '✨ സ്റ്റോറിലേക്ക് സ്വാഗതം' : '✨ Entering The Store...';
+    return lang === 'ml' ? '✨ ദേശിമാർട്ടിലേക്ക് സ്വാഗതം' : '✨ Entering Desimart...';
   };
 
   return (
     <div
       ref={containerRef}
       id="hero-scroll-container"
-      className="relative h-[260vh] sm:h-[280vh] bg-[#14101E] z-10"
+      className="relative h-[240vh] sm:h-[260vh] bg-[#14101E] z-10 -mb-[100vh] -mb-[100dvh]"
     >
       {/* Sticky Fullscreen Viewport with Dynamic Viewport Height */}
       <div
-        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-[#14101E] select-none"
-        style={{ opacity: overallOpacity }}
+        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-[#14101E] select-none will-change-transform will-change-opacity"
+        style={{
+          opacity: overallOpacity,
+          pointerEvents: progress >= 0.99 ? 'none' : 'auto',
+          visibility: overallOpacity <= 0.001 ? 'hidden' : 'visible',
+          transform: `scale(${1 + 0.02 * easeFade})`,
+        }}
       >
         {/* Loading Skeleton / Placeholder before video streams */}
         {!isVideoReady && (
@@ -287,6 +315,9 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
           className={`w-full h-full object-cover filter contrast-[1.03] brightness-[1.02] transform-gpu will-change-transform transition-opacity duration-500 ${
             isVideoReady ? 'opacity-100' : 'opacity-0'
           }`}
+          style={{
+            filter: `contrast(1.03) brightness(1.02) blur(${easeFade * 4}px)`,
+          }}
         >
           <source
             src="/scroll-mobile.mp4"
@@ -343,7 +374,7 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
         )}
 
         {/* Persistent Desi HUD: Location indicator, Sound toggle & Skip button */}
-        {progress > 0.05 && progress < 0.92 && (
+        {progress > 0.05 && progress < 0.85 && (
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-auto">
             {/* Street location badge */}
             <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFDF7] border-2 border-[#1E1B18] text-[#1E1B18] text-xs font-mono font-bold shadow-[2px_2px_0px_#1E1B18]">
@@ -381,34 +412,10 @@ export default function HeroSection({ lang = 'en' }: HeroSectionProps) {
           />
         </div>
 
-        {/* Cinematic Store Entrance Portal at the end of video */}
-        {exitFade > 0.05 && (
-          <div
-            className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center transition-opacity duration-200 z-10 bg-[#FAF4E6]"
-            style={{ opacity: exitFade }}
-          >
-            <div className="relative text-center px-4 transform -translate-y-4 max-w-lg bg-[#FFFDF7] p-8 rounded-3xl border-3 border-[#1E1B18] shadow-[8px_8px_0px_#1E1B18]">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] text-[#1E1B18] text-xs font-black tracking-widest uppercase mb-3 shadow-[2px_2px_0px_#1E1B18]">
-                <Sparkles className="w-4 h-4 text-[#1E1B18]" />
-                <span>{lang === 'ml' ? 'അർലോ & കോ. സ്റ്റോറിലേക്ക് സ്വാഗതം' : 'ENTERING ARLO & CO. STORE'}</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#1E1B18] font-desi-display lowercase">
-                the 9 sacred craft stamps
-              </h2>
-              <p className="mt-2 text-xs sm:text-sm text-[#C8331E] font-bold font-mono">
-                {lang === 'ml' ? 'താഴേക്ക് സ്ക്രോൾ ചെയ്ത് 9 വിഭാഗങ്ങൾ കാണുക' : 'Scroll down to explore categories'}
-              </p>
-              <div className="mt-4 flex justify-center">
-                <ChevronDown className="w-6 h-6 text-[#F15A24] animate-bounce" />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Cinematic Fade-out mask directly dissolving into Category section at the end of scroll */}
+        {/* Soft Indian Sandalwood dissolve layer */}
         <div
           className="absolute inset-0 bg-[#FAF4E6] pointer-events-none transition-opacity duration-150"
-          style={{ opacity: exitFade }}
+          style={{ opacity: easeFade }}
         />
       </div>
     </div>
