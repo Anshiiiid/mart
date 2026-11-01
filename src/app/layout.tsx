@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ഹട്കെ ഹാത്ത് • Hatke Haat | Cyber-Traditional E-Commerce',
-  description: 'Where Indian Heritage Craft Meets Next-Gen Futuristic Technology. Exclusive 3D showcase, smart appliances, artisanal cookware, cyber audio, and ambient living.',
-  keywords: ['Hatke Haat', 'Indian Traditional Art', 'Cyber-Traditional', 'Futuristic E-Commerce', 'Home Appliances', 'Handcrafted', 'Next.js E-Commerce'],
+  title: 'Hatke • Everyday finds, a little different | ഹട്കെ',
+  description: 'Desi at heart. Made for every Indian home. Launching first in Kerala. Useful first, honest prices, real delivery dates shown before you pay.',
+  keywords: ['Hatke', 'Hatke Store', 'Kerala', 'Everyday finds', 'Desi at heart', 'Indian home products', 'Clever finds'],
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -13,12 +16,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;500;600;700;800;1,9..40,400&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className="min-h-screen bg-[#09070F] text-slate-100 antialiased selection:bg-amber-500 selection:text-black">
+      <body className="min-h-screen bg-[#FAF9F6] text-[#111827] font-hatke-body antialiased selection:bg-[#FACC15] selection:text-[#111827]">
         {children}
       </body>
     </html>

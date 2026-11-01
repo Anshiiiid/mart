@@ -6,6 +6,7 @@ export interface Product {
   categorySlug: string;
   price: number;
   originalPrice?: number;
+  costPrice?: number; // Sourcing cost for Accounts profit calculation
   discountPercent?: number;
   rating: number;
   reviewCount: number;
@@ -18,6 +19,8 @@ export interface Product {
   stock: number;
   isFeatured?: boolean;
   is3dAvailable?: boolean;
+  badge?: 'New find' | 'Thoda sale' | 'Gift ready' | 'Desi find' | '3 whistles done!' | 'Best seller';
+  tileColor?: 'leaf' | 'mango' | 'coconut'; // Brand guideline: one product, one colour
   traditionalArtTag?: string; // e.g. "Kerala Mural Filigree", "Channapatna Craft", "Temple Brass"
   tags: string[];
   createdAt: string;
@@ -77,12 +80,18 @@ export interface Order {
 
 export interface AdminAnalytics {
   totalRevenue: number;
+  netRevenue: number;
   totalOrders: number;
   totalProducts: number;
   totalCustomers: number;
-  monthlyRevenue: { month: string; amount: number }[];
-  categoryDistribution: { category: string; count: number; revenue: number }[];
-  recentActivities: { id: string; action: string; time: string; type: string }[];
+  averageOrderValue: number;
+  conversionRate: number;
+  monthlyRevenue: { month: string; amount: number; orders: number }[];
+  dailySales: { day: string; date: string; amount: number; orders: number }[];
+  categoryDistribution: { category: string; count: number; revenue: number; percentage: number }[];
+  regionalDistribution: { city: string; state: string; orders: number; revenue: number; percentage: number }[];
+  conversionFunnel: { step: string; count: number; percentage: number }[];
+  recentActivities: { id: string; action: string; time: string; type: 'order' | 'stock' | 'user' | 'delivery' | 'marketing' }[];
 }
 
 export interface CustomerUser {
@@ -90,8 +99,90 @@ export interface CustomerUser {
   name: string;
   email: string;
   phone: string;
+  city?: string;
   joinedDate: string;
   totalOrders: number;
   totalSpent: number;
   status: 'Active' | 'VIP' | 'Inactive';
+}
+
+// ---------------- MARKETING TYPES ----------------
+export interface Coupon {
+  id: string;
+  code: string;
+  discountType: 'percentage' | 'flat';
+  discountValue: number;
+  minOrderValue: number;
+  usageLimit: number;
+  usageCount: number;
+  expiresAt: string;
+  isActive: boolean;
+  description: string;
+}
+
+export interface MarketingCampaign {
+  id: string;
+  name: string;
+  channel: 'Instagram' | 'WhatsApp' | 'Google Ads' | 'Influencer';
+  status: 'Active' | 'Paused' | 'Ended';
+  budget: number;
+  spent: number;
+  revenue: number;
+  roas: number;
+  clicks: number;
+  conversions: number;
+}
+
+export interface WhatsAppTemplate {
+  id: string;
+  title: string;
+  triggerEvent: 'Abandoned Cart' | 'Order Confirmation' | 'Dispatched (പാഴ്സൽ വന്നു)' | 'Festival Sale';
+  message: string;
+  sentCount: number;
+  openRate: number;
+}
+
+export interface AnnouncementBanner {
+  text: string;
+  badge: string;
+  linkText: string;
+  linkUrl: string;
+  isEnabled: boolean;
+}
+
+// ---------------- ACCOUNTS & FINANCIAL TYPES ----------------
+export interface BusinessExpense {
+  id: string;
+  title: string;
+  category: 'Packaging' | 'Shipping' | 'Marketing' | 'Sourcing' | 'Tools & SaaS' | 'Operations';
+  amount: number;
+  date: string;
+  paymentMode: 'UPI' | 'Bank Transfer' | 'Cash' | 'Card';
+  notes?: string;
+}
+
+export interface FinancialSummary {
+  grossRevenue: number;
+  netSales: number;
+  cogs: number;
+  shippingCosts: number;
+  marketingSpend: number;
+  gatewayFees: number;
+  operationalExpenses: number;
+  netProfit: number;
+  profitMarginPercent: number;
+  pendingPayouts: number;
+  settledPayouts: number;
+  gstCollected: number;
+}
+
+export interface PayoutSettlement {
+  id: string;
+  payoutId: string;
+  amount: number;
+  bankName: string;
+  accountNumber: string;
+  status: 'Settled' | 'Processing' | 'Failed';
+  settledDate: string;
+  utr: string;
 }

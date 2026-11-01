@@ -1,4 +1,15 @@
-import { CategoryFolder, Product, Order, CustomerUser } from './types';
+import {
+  CategoryFolder,
+  Product,
+  Order,
+  CustomerUser,
+  Coupon,
+  MarketingCampaign,
+  BusinessExpense,
+  WhatsAppTemplate,
+  AnnouncementBanner,
+  PayoutSettlement,
+} from './types';
 
 export const initialCategories: CategoryFolder[] = [
   {
@@ -7,7 +18,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Home Appliances',
     nameMl: 'ഹോം അപ്ലയൻസസ്',
     badge: 'Popular',
-    color: '#F59E0B', // Amber Gold
+    color: '#FACC15', // Haldi Yellow (Brand Core)
     bgGradient: 'from-amber-950/40 via-amber-900/20 to-black',
     iconName: 'Zap',
     bannerImage: '/categories/home-appliances.jpg',
@@ -21,7 +32,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Cyber Audio & Gadgets',
     nameMl: 'ഓഡിയോ & ഗാഡ്‌ജറ്റുകൾ',
     badge: 'Trending',
-    color: '#06B6D4', // Cyan
+    color: '#2A4BD7', // Neel (Bazaar Accent)
     bgGradient: 'from-cyan-950/40 via-cyan-900/20 to-black',
     iconName: 'Headphones',
     bannerImage: '/categories/cyber-audio.jpg',
@@ -35,8 +46,8 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Heritage Cookware',
     nameMl: 'ഹെറിറ്റേജ് കുക്ക്വെയർ',
     badge: 'Artisan',
-    color: '#D97706', // Brass/Bronze
-    bgGradient: 'from-orange-950/40 via-amber-950/20 to-black',
+    color: '#1F5C3A', // Vazhayila / Leaf Green (Brand Core)
+    bgGradient: 'from-emerald-950/40 via-green-950/20 to-black',
     iconName: 'UtensilsCrossed',
     bannerImage: '/categories/kitchen-cookware.jpg',
     description: 'Cast iron cookware, hammered brass kettles and Ayurvedic earthen pots.',
@@ -49,7 +60,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Cyber Workspace',
     nameMl: 'കമ്പ്യൂട്ടിംഗ് & ഡെസ്ക്',
     badge: 'New',
-    color: '#8B5CF6', // Purple/Violet
+    color: '#0F7C8A', // Peacock (Bazaar Accent)
     bgGradient: 'from-purple-950/40 via-violet-900/20 to-black',
     iconName: 'Keyboard',
     bannerImage: '/categories/computing-workspace.jpg',
@@ -63,7 +74,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Heritage Lighting & Decor',
     nameMl: 'ഡെക്കോർ & വിളക്കുകൾ',
     badge: 'Handcrafted',
-    color: '#EAB308', // Warm Gold
+    color: '#F2B31B', // Haldi (Bazaar Accent)
     bgGradient: 'from-yellow-950/40 via-amber-950/20 to-black',
     iconName: 'Lamp',
     bannerImage: '/categories/ambient-living.jpg',
@@ -77,7 +88,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Personal Grooming',
     nameMl: 'ഗ്രൂമിംഗ് & കെയർ',
     badge: 'Organic',
-    color: '#EC4899', // Pink / Rose
+    color: '#E6337A', // Rani (Bazaar Accent)
     bgGradient: 'from-pink-950/40 via-rose-950/20 to-black',
     iconName: 'Sparkles',
     bannerImage: '/categories/personal-care.jpg',
@@ -91,7 +102,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Kids & Nursery',
     nameMl: 'കിഡ്സ് & ടോയ്‌സ്',
     badge: 'Eco-Safe',
-    color: '#10B981', // Emerald
+    color: '#2E7D50', // Leaf Light (Bazaar Accent)
     bgGradient: 'from-emerald-950/40 via-teal-950/20 to-black',
     iconName: 'HeartHandshake',
     bannerImage: '/categories/kids-nursery.jpg',
@@ -105,7 +116,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Clean Tech & Utility',
     nameMl: 'ക്ലീൻ ടെക് & സേഫ്റ്റി',
     badge: 'Smart Tech',
-    color: '#EF4444', // Crimson
+    color: '#C4532D', // Mitti (Bazaar Accent)
     bgGradient: 'from-red-950/40 via-rose-950/20 to-black',
     iconName: 'ShieldAlert',
     bannerImage: '/categories/smart-mobility.jpg',
@@ -119,7 +130,7 @@ export const initialCategories: CategoryFolder[] = [
     name: 'Home Sanitation',
     nameMl: 'ഹോം സാനിറ്റേഷൻ',
     badge: 'Essential',
-    color: '#3B82F6', // Blue
+    color: '#8FA27A', // Elaichi (Bazaar Accent)
     bgGradient: 'from-blue-950/40 via-indigo-950/20 to-black',
     iconName: 'Droplets',
     bannerImage: '/categories/modern-sanitation.jpg',
@@ -550,9 +561,258 @@ export const initialCustomers: CustomerUser[] = [
     name: 'Nandana Krishnan',
     email: 'nandana.k@example.com',
     phone: '+91 94002 44332',
+    city: 'Thrissur',
     joinedDate: '2026-10-15',
     totalOrders: 1,
     totalSpent: 4999,
     status: 'Active',
+  },
+  {
+    id: 'cust-5',
+    name: 'Muhammed Nihal',
+    email: 'nihal.m@example.com',
+    phone: '+91 98950 77889',
+    city: 'Kozhikode',
+    joinedDate: '2026-09-18',
+    totalOrders: 5,
+    totalSpent: 34200,
+    status: 'VIP',
+  },
+  {
+    id: 'cust-6',
+    name: 'Anjali Nair',
+    email: 'anjali.nair@example.com',
+    phone: '+91 94462 11990',
+    city: 'Kochi',
+    joinedDate: '2026-10-02',
+    totalOrders: 2,
+    totalSpent: 8750,
+    status: 'Active',
+  },
+];
+
+export const initialCoupons: Coupon[] = [
+  {
+    id: 'coup-1',
+    code: 'HATKE10',
+    discountType: 'percentage',
+    discountValue: 10,
+    minOrderValue: 499,
+    usageLimit: 500,
+    usageCount: 142,
+    expiresAt: '2026-12-31',
+    isActive: true,
+    description: '10% discount on first everyday find (Min ₹499)',
+  },
+  {
+    id: 'coup-2',
+    code: 'POORAHATKE',
+    discountType: 'flat',
+    discountValue: 250,
+    minOrderValue: 1499,
+    usageLimit: 300,
+    usageCount: 89,
+    expiresAt: '2026-11-30',
+    isActive: true,
+    description: '₹250 flat discount on smart home & cookware orders',
+  },
+  {
+    id: 'coup-3',
+    code: 'KERALA20',
+    discountType: 'percentage',
+    discountValue: 20,
+    minOrderValue: 999,
+    usageLimit: 200,
+    usageCount: 167,
+    expiresAt: '2026-11-15',
+    isActive: true,
+    description: '20% off festival launch discount across Kerala',
+  },
+  {
+    id: 'coup-4',
+    code: 'CHAI50',
+    discountType: 'flat',
+    discountValue: 50,
+    minOrderValue: 399,
+    usageLimit: 1000,
+    usageCount: 420,
+    expiresAt: '2026-12-31',
+    isActive: true,
+    description: 'Chai break special! ₹50 off on quick desk finds',
+  },
+];
+
+export const initialCampaigns: MarketingCampaign[] = [
+  {
+    id: 'camp-1',
+    name: 'Instagram Reels • "Har Cheez Thoda Hatke"',
+    channel: 'Instagram',
+    status: 'Active',
+    budget: 20000,
+    spent: 14200,
+    revenue: 68400,
+    roas: 4.82,
+    clicks: 4820,
+    conversions: 84,
+  },
+  {
+    id: 'camp-2',
+    name: 'WhatsApp Broadcast • Onam & Monsoon Bazaar',
+    channel: 'WhatsApp',
+    status: 'Active',
+    budget: 5000,
+    spent: 3500,
+    revenue: 34200,
+    roas: 9.77,
+    clicks: 1240,
+    conversions: 46,
+  },
+  {
+    id: 'camp-3',
+    name: 'Google Shopping • Smart Kitchen Finds & Airfryer',
+    channel: 'Google Ads',
+    status: 'Active',
+    budget: 15000,
+    spent: 8800,
+    revenue: 29500,
+    roas: 3.35,
+    clicks: 2150,
+    conversions: 28,
+  },
+  {
+    id: 'camp-4',
+    name: 'Kochi Techies • Influencer Unboxing Video',
+    channel: 'Influencer',
+    status: 'Ended',
+    budget: 12000,
+    spent: 12000,
+    revenue: 49800,
+    roas: 4.15,
+    clicks: 3900,
+    conversions: 52,
+  },
+];
+
+export const initialWhatsAppTemplates: WhatsAppTemplate[] = [
+  {
+    id: 'wt-1',
+    title: 'പാഴ്സൽ വന്നു! • Order Dispatched Alert',
+    triggerEvent: 'Dispatched (പാഴ്സൽ വന്നു)',
+    message: 'നമസ്കാരം {{name}}! 📦 നിങ്ങളുടെ Hatke പാർസൽ വണ്ടികയറി. Tracking ID: {{tracking}}. സന്തോഷത്തോടെ സ്വീകരിക്കൂ! ✨',
+    sentCount: 312,
+    openRate: 94.2,
+  },
+  {
+    id: 'wt-2',
+    title: 'Abandoned Cart Recovery (ബാക്കി വെച്ച ഫൈൻഡ്സ്)',
+    triggerEvent: 'Abandoned Cart',
+    message: 'ഹായ് {{name}}! നിങ്ങളുടെ Hatke ബാസ്കറ്റിൽ സാധനങ്ങൾ കാത്തിരിക്കുന്നുണ്ട്. 10% കിഴിവോടെ വാങ്ങാൻ "HATKE10" കോഡ് ഉപയോഗിക്കൂ!',
+    sentCount: 184,
+    openRate: 78.5,
+  },
+  {
+    id: 'wt-3',
+    title: 'Order Confirmed & Delivery Promise',
+    triggerEvent: 'Order Confirmation',
+    message: 'Nanni {{name}}! Your order #{{orderId}} is confirmed. Our team in Kerala is packing your finds with care. Delivered thoda hatke!',
+    sentCount: 418,
+    openRate: 98.1,
+  },
+  {
+    id: 'wt-4',
+    title: 'Thoda Sale, Poora Hatke! • Flash Weekend',
+    triggerEvent: 'Festival Sale',
+    message: '🔥 Thoda sale, poora hatke! This weekend only: Up to 30% off on clever everyday finds for your home & kitchen.',
+    sentCount: 890,
+    openRate: 71.4,
+  },
+];
+
+export const initialAnnouncementBanner: AnnouncementBanner = {
+  text: 'Everyday finds, a little different. Free delivery across Kerala on orders above ₹999 🥥',
+  badge: 'Thoda Hatke',
+  linkText: 'Shop New Finds',
+  linkUrl: '/',
+  isEnabled: true,
+};
+
+export const initialExpenses: BusinessExpense[] = [
+  {
+    id: 'exp-1',
+    title: 'Delhivery Surface Courier & COD Logistics',
+    category: 'Shipping',
+    amount: 14850,
+    date: '2026-10-29',
+    paymentMode: 'Bank Transfer',
+    notes: 'Bulk shipping invoice for 140 dispatches across Kerala & Bangalore',
+  },
+  {
+    id: 'exp-2',
+    title: 'Eco Craft Mailer Boxes & Custom Leaf Green Tape',
+    category: 'Packaging',
+    amount: 6200,
+    date: '2026-10-25',
+    paymentMode: 'UPI',
+    notes: '500 custom mailer boxes with Hatke tilted logo print',
+  },
+  {
+    id: 'exp-3',
+    title: 'Meta / Instagram Ads Pre-payment',
+    category: 'Marketing',
+    amount: 15000,
+    date: '2026-10-22',
+    paymentMode: 'Card',
+    notes: 'Monsoon finds reel campaign spend',
+  },
+  {
+    id: 'exp-4',
+    title: 'Product Studio Photography & Cutout Assets',
+    category: 'Sourcing',
+    amount: 5500,
+    date: '2026-10-18',
+    paymentMode: 'UPI',
+    notes: '20 new finds shot on Leaf, Mango & Coconut tiles',
+  },
+  {
+    id: 'exp-5',
+    title: 'Next.js Hosting & MongoDB Cloud Atlas',
+    category: 'Tools & SaaS',
+    amount: 2400,
+    date: '2026-10-12',
+    paymentMode: 'Card',
+    notes: 'Server infrastructure & database upkeep',
+  },
+];
+
+export const initialPayoutSettlements: PayoutSettlement[] = [
+  {
+    id: 'set-1',
+    payoutId: 'PO-20261028-091',
+    amount: 48950,
+    bankName: 'HDFC Bank (Kochi Infopark Br.)',
+    accountNumber: '•••• •••• 4892',
+    status: 'Settled',
+    settledDate: '2026-10-28',
+    utr: 'HDFCR5202610289901423',
+  },
+  {
+    id: 'set-2',
+    payoutId: 'PO-20261025-084',
+    amount: 36400,
+    bankName: 'HDFC Bank (Kochi Infopark Br.)',
+    accountNumber: '•••• •••• 4892',
+    status: 'Settled',
+    settledDate: '2026-10-25',
+    utr: 'HDFCR5202610257712490',
+  },
+  {
+    id: 'set-3',
+    payoutId: 'PO-20261031-102',
+    amount: 24750,
+    bankName: 'HDFC Bank (Kochi Infopark Br.)',
+    accountNumber: '•••• •••• 4892',
+    status: 'Processing',
+    settledDate: '2026-11-02 (Est)',
+    utr: 'IN_TRANSIT_RZP_BATCH',
   },
 ];

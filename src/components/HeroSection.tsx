@@ -35,7 +35,7 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
   const lastTargetTimeRef = useRef(0);
   const videoDecodedUnlockedRef = useRef(false);
 
-  // 1. Detect screen mode (phone portrait vs desktop landscape) and handle resize/rotation
+  // 1. Detect screen mode (phone portrait vs desktop landscape)
   useEffect(() => {
     const checkOrientation = () => {
       const isMobileQuery = window.matchMedia('(max-width: 767px), (orientation: portrait)');
@@ -47,7 +47,6 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     const mql = window.matchMedia('(max-width: 767px), (orientation: portrait)');
     const handleMqlChange = (e: MediaQueryListEvent) => {
       setIsMobileMode(e.matches);
-      // Reload video source seamlessly on orientation switch
       const video = videoRef.current;
       if (video) {
         const prevTime = video.currentTime;
@@ -71,7 +70,7 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     };
   }, []);
 
-  // 2. Hardware Decoder Unlocker (Specifically vital for iOS Safari and mobile Chrome)
+  // 2. Hardware Decoder Unlocker
   const unlockHardwareDecoder = useCallback(() => {
     if (videoDecodedUnlockedRef.current) return;
     const video = videoRef.current;
@@ -85,9 +84,7 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
           video.pause();
           videoDecodedUnlockedRef.current = true;
         })
-        .catch(() => {
-          // Autoplay policy or user hasn't interacted yet
-        });
+        .catch(() => {});
     }
   }, []);
 
@@ -100,7 +97,7 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
 
     const handleLoadedMetadata = () => {
       video.pause();
-      video.currentTime = 0.001; // Prime hardware decoder
+      video.currentTime = 0.001;
       setIsVideoReady(true);
       unlockHardwareDecoder();
     };
@@ -117,7 +114,6 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('seeked', handleSeeked);
 
-    // Modern browsers (Chrome, Edge, Safari 15.4+): hook presentation callback for zero-drop rendering
     let rVFCId: number | null = null;
     if ('requestVideoFrameCallback' in video) {
       const onVideoFramePresented = () => {
@@ -133,7 +129,6 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
       handleLoadedMetadata();
     }
 
-    // Touch/click listener to wake up mobile audio & decoder
     const handleFirstTouch = () => {
       unlockHardwareDecoder();
       window.removeEventListener('touchstart', handleFirstTouch);
@@ -154,7 +149,7 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     };
   }, [unlockHardwareDecoder]);
 
-  // 4. Scroll tracking with high precision
+  // 4. Scroll tracking
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
@@ -176,11 +171,10 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     };
   }, []);
 
-  // 5. High-performance lerp & render loop
+  // 5. Render loop
   useEffect(() => {
     const loop = () => {
       const diff = targetProgressRef.current - currentProgressRef.current;
-      // Responsive lerp dampening (0.18 on mobile for silky touch glide, 0.24 on desktop for snappy tracking)
       const lerpFactor = isMobileMode ? 0.18 : 0.24;
 
       if (Math.abs(diff) > 0.0001) {
@@ -192,26 +186,22 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
       const p = currentProgressRef.current;
       setProgress(p);
 
-      // Notify parent page for in-place crossfade synchronization
       if (onProgressUpdate) {
         onProgressUpdate({
           progress: p,
           rawProgress: targetProgressRef.current,
           scrollableDist: scrollableDistRef.current,
           scrollY: window.scrollY,
-          isExited: p >= 0.999,
+          isExited: p >= 0.96,
         });
       }
 
       const video = videoRef.current;
       if (video && video.duration && !isNaN(video.duration) && video.readyState >= 2) {
-        // Safe target time clamped within duration
         const rawTime = Math.max(0, Math.min(video.duration - 0.04, p * video.duration));
-        // Quantize accurately to 24fps frame step (0.0416s)
         const frameTime = Math.round(rawTime * 24) / 24;
         lastTargetTimeRef.current = frameTime;
 
-        // Vsync-synchronized seek: only dispatch seek if decoder is not currently busy
         if (!isSeekingRef.current) {
           if (Math.abs(video.currentTime - frameTime) >= 0.02) {
             isSeekingRef.current = true;
@@ -230,7 +220,6 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     };
   }, [isMobileMode, onProgressUpdate]);
 
-  // Audio mute/unmute handler
   const toggleSound = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -242,64 +231,60 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
     }
   };
 
-  // Quick skip straight to store products
   const handleSkipToStore = () => {
-    const storeSection = document.getElementById('store-content') || document.getElementById('categories');
-    if (storeSection) {
-      storeSection.scrollIntoView({ behavior: 'smooth' });
+    const categorySection = document.getElementById('categories');
+    if (categorySection) {
+      categorySection.scrollIntoView({ behavior: 'smooth' });
     } else {
-      window.scrollTo({ top: window.innerHeight * 1.6, behavior: 'smooth' });
+      window.scrollTo({ top: window.innerHeight * 2.2, behavior: 'smooth' });
     }
   };
 
-  // Smooth exit fade into the Category Section as progress approaches 1.0 (80% -> 100%)
-  const exitFade = progress > 0.80 ? Math.min(1, (progress - 0.80) / 0.20) : 0;
-  // Sinusoidal easing for smooth dissolve
-  const easeFade = exitFade < 0.5 ? 2 * exitFade * exitFade : 1 - Math.pow(-2 * exitFade + 2, 2) / 2;
-  const overallOpacity = Math.max(0, 1 - easeFade);
+  // Smooth exit fade
+  const exitFade = progress > 0.75 ? Math.min(1, (progress - 0.75) / 0.21) : 0;
+  const overallOpacity = Math.max(0, 1 - exitFade);
+  const isFullyExited = progress >= 0.96;
 
-  // Intro UI fade out early in the scroll (0% -> 15%)
+  // Intro UI fade out early in scroll
   const introFade = Math.max(0, 1 - progress / 0.15);
 
-  // Dynamic location badge text based on scroll depth down the street
   const getLocationLabel = () => {
     if (progress < 0.28) {
-      return lang === 'ml' ? '🏮 വിളക്കുകളുടെ തെരുവ്' : '🏮 Lantern Alley';
+      return lang === 'ml' ? '🏮 വിളക്കുകളുടെ നിര' : '🏮 Lantern Row';
     }
-    if (progress < 0.6) {
-      return lang === 'ml' ? '🎪 അങ്ങാടി നിര • പഴം & സാധനങ്ങൾ' : '🎪 Fresh Stalls & Bazaar Row';
+    if (progress < 0.58) {
+      return lang === 'ml' ? '🎪 അങ്ങാടി നിര • നിത്യോപയോഗ സാധനങ്ങൾ' : '🎪 Everyday Finds & Aisle';
     }
-    if (progress < 0.80) {
-      return lang === 'ml' ? '🐱 ആർലോ & കോ. സ്റ്റോർ മുൻവശം' : '🐱 Arlo & Co. Storefront';
+    if (progress < 0.78) {
+      return lang === 'ml' ? '🌴 ഹട്കെ സ്റ്റോർ മുൻവശം' : '🌴 Hatke Storefront';
     }
-    return lang === 'ml' ? '✨ ദേശിമാർട്ടിലേക്ക് സ്വാഗതം' : '✨ Entering Desimart...';
+    return lang === 'ml' ? '✨ ഹട്കെയിലേക്ക് സ്വാഗതം' : '✨ Entering Hatke Bazaar...';
   };
 
   return (
     <div
       ref={containerRef}
       id="hero-scroll-container"
-      className="relative h-[240vh] sm:h-[260vh] bg-[#14101E] z-10 -mb-[100vh] -mb-[100dvh]"
+      className="relative h-[220vh] sm:h-[240vh] bg-[#FAF9F6]"
     >
-      {/* Sticky Fullscreen Viewport with Dynamic Viewport Height */}
+      {/* Sticky Fullscreen Viewport Layer */}
       <div
-        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-[#14101E] select-none will-change-transform will-change-opacity"
+        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-[#111827] select-none z-20 will-change-transform will-change-opacity"
         style={{
           opacity: overallOpacity,
-          pointerEvents: progress >= 0.99 ? 'none' : 'auto',
-          visibility: overallOpacity <= 0.001 ? 'hidden' : 'visible',
-          transform: `scale(${1 + 0.02 * easeFade})`,
+          pointerEvents: isFullyExited ? 'none' : 'auto',
+          visibility: isFullyExited ? 'hidden' : 'visible',
         }}
       >
-        {/* Loading Skeleton / Placeholder before video streams */}
+        {/* Loading Skeleton */}
         {!isVideoReady && (
-          <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-[#FAF4E6]">
+          <div className="absolute inset-0 z-0 flex flex-col items-center justify-center bg-[#FAF9F6]">
             <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-              <div className="absolute inset-0 rounded-full border-4 border-[#F15A24]/30 animate-ping"></div>
-              <div className="w-full h-full rounded-full border-4 border-[#F15A24] border-t-transparent animate-spin"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-[#1F5C3A]/30 animate-ping"></div>
+              <div className="w-full h-full rounded-full border-4 border-[#1F5C3A] border-t-transparent animate-spin"></div>
             </div>
-            <p className="mt-4 text-xs tracking-widest uppercase font-mono font-bold text-[#1E1B18]">
-              {lang === 'ml' ? 'അങ്ങാടി ഒരുങ്ങുന്നു...' : 'Opening Indian Bazaar...'}
+            <p className="mt-4 text-xs tracking-wider uppercase font-hatke-body font-bold text-[#111827]">
+              {lang === 'ml' ? 'ഹട്കെ അങ്ങാടി ഒരുങ്ങുന്നു...' : 'Opening Hatke Bazaar...'}
             </p>
           </div>
         )}
@@ -315,9 +300,6 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
           className={`w-full h-full object-cover filter contrast-[1.03] brightness-[1.02] transform-gpu will-change-transform transition-opacity duration-500 ${
             isVideoReady ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{
-            filter: `contrast(1.03) brightness(1.02) blur(${easeFade * 4}px)`,
-          }}
         >
           <source
             src="/scroll-mobile.mp4"
@@ -330,72 +312,86 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
           />
         </video>
 
-        {/* Ambient Warm Indian Festival Vignette */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/80 via-black/30 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#FAF4E6] via-[#FAF4E6]/80 to-transparent pointer-events-none" />
+        {/* Soft Vignettes */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/75 via-black/25 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent pointer-events-none" />
 
-        {/* Intro Overlay: Indian Desimart Marquee */}
+        {/* Intro Overlay: Hatke Brand Card */}
         {introFade > 0.01 && (
           <div
             className="absolute inset-0 flex flex-col items-center justify-between p-6 sm:p-10 pointer-events-none transition-opacity duration-200"
             style={{ opacity: introFade }}
           >
-            {/* Top Desi Postage Badge */}
-            <div className="mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF4E6] border-2 border-[#1E1B18] shadow-[3px_3px_0px_#1E1B18] text-[#1E1B18]">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#F15A24] animate-ping" />
-              <span className="text-[11px] sm:text-xs font-black tracking-widest uppercase font-mono">
-                {lang === 'ml' ? 'ധമാക്ക ക്ലിയറൻസ് സെയിൽ • അർലോ & കോ.' : 'DHAMAKA CLEARANCE SALE • ARLO & CO.'}
+            {/* Top Badge: Green & Yellow */}
+            <div className="mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFFFFF] border-2 border-[#111827] shadow-[3px_3px_0px_#111827] text-[#111827]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1F5C3A] animate-ping" />
+              <span className="text-[11px] sm:text-xs font-black tracking-wider uppercase font-hatke-body">
+                {lang === 'ml' ? 'കേരളത്തിൽ ആരംഭിക്കുന്നു 🌴 • അല്പം വ്യത്യസ്തം' : 'LAUNCHING FIRST IN KERALA 🌴 • DESI AT HEART'}
               </span>
             </div>
 
-            {/* Center Title Card in Curried Away / Banjara Style */}
-            <div className="text-center max-w-xl mx-auto px-4 bg-[#FFFDF7]/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl border-3 border-[#1E1B18] shadow-[6px_6px_0px_#1E1B18]">
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#1E1B18] font-desi-display lowercase drop-shadow-sm">
-                hatke<span className="text-[#F15A24]">.</span>haat
+            {/* Center Title Card */}
+            <div className="text-center max-w-xl mx-auto px-4 bg-[#FFFFFF]/95 backdrop-blur-md p-6 sm:p-8 rounded-3xl border-3 border-[#111827] shadow-[6px_6px_0px_#111827]">
+              <div className="inline-flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-[#FACC15]" />
+                <span className="text-[11px] font-black uppercase tracking-widest text-[#1F5C3A] font-hatke-body">
+                  Har cheez, thoda hatke
+                </span>
+                <span className="w-2 h-2 rounded-full bg-[#FACC15]" />
+              </div>
+              <h1 className="text-5xl sm:text-7xl font-black tracking-tight text-[#111827] font-hatke-title drop-shadow-xs">
+                Hat<span className="hatke-k-tilt text-[#1F5C3A]">k</span>e
               </h1>
-              <div className="w-16 h-1 bg-[#F15A24] mx-auto my-2 rounded-full" />
-              <p className="mt-1 text-sm sm:text-base font-bold text-[#C8331E] font-desi-serif tracking-wide">
+              <div className="w-16 h-1.5 bg-[#FACC15] mx-auto my-3 rounded-full" />
+              <p className="text-base sm:text-lg font-bold text-[#1F5C3A] font-hatke-body tracking-tight">
                 {lang === 'ml'
-                  ? 'തനിമയാർന്ന ഇന്ത്യൻ കരവിരുതും ആധുനിക ദേശിമാർട്ടും'
-                  : 'Indian Heritage Fused With Handcrafted Life'}
+                  ? 'ദിവസേനയുള്ള കണ്ടെത്തലുകൾ, കുറച്ച് വ്യത്യസ്തമായി.'
+                  : 'Everyday finds, a little different.'}
+              </p>
+              <p className="mt-2 text-xs sm:text-sm text-[#111827]/80 font-medium font-hatke-body">
+                {lang === 'ml'
+                  ? 'സാധനങ്ങൾ വിൽക്കാൻ മാത്രമല്ല, ദൈനംദിന ജീവിതം അല്പം കൂടുതൽ ആസ്വാദ്യകരമാക്കാൻ.'
+                  : 'A store not just to sell things, but to make the everyday a little more fun.'}
               </p>
             </div>
 
-            {/* Bottom Animated Scroll Cue */}
-            <div className="mb-6 flex flex-col items-center gap-2">
-              <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-[#1E1B18] px-3 py-1 rounded-full bg-[#E99D1A] border-2 border-[#1E1B18] shadow-[2px_2px_0px_#1E1B18]">
-                {lang === 'ml' ? 'അങ്ങാടി കാണാൻ താഴേക്ക് സ്ക്രോൾ ചെയ്യുക' : 'Scroll down to enter market'}
+            {/* Bottom Animated Scroll Cue Button in Haldi Yellow */}
+            <button
+              onClick={handleSkipToStore}
+              className="mb-6 flex flex-col items-center gap-2 pointer-events-auto cursor-pointer group"
+              title="Click to enter Hatke Bazaar"
+            >
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#111827] px-4 py-1.5 rounded-full bg-[#FACC15] border-2 border-[#111827] shadow-[2.5px_2.5px_0px_#111827] group-hover:bg-[#EAB308] transition-colors font-hatke-body">
+                {lang === 'ml' ? 'അങ്ങാടി കാണാൻ ക്ലിക്ക് ചെയ്യുക / താഴേക്ക് സ്ക്രോൾ ചെയ്യുക' : 'Click to enter bazaar / Scroll down'}
               </span>
-              <div className="w-6 h-10 rounded-full border-2 border-[#1E1B18] flex items-start justify-center p-1 bg-[#FFFDF7] shadow-[2px_2px_0px_#1E1B18]">
-                <div className="w-1.5 h-2.5 rounded-full bg-[#F15A24] animate-bounce" />
+              <div className="w-6 h-10 rounded-full border-2 border-[#111827] flex items-start justify-center p-1 bg-[#FFFFFF] shadow-[2px_2px_0px_#111827]">
+                <div className="w-1.5 h-2.5 rounded-full bg-[#1F5C3A] animate-bounce" />
               </div>
-            </div>
+            </button>
           </div>
         )}
 
-        {/* Persistent Desi HUD: Location indicator, Sound toggle & Skip button */}
+        {/* Persistent Desi HUD */}
         {progress > 0.05 && progress < 0.85 && (
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-auto">
-            {/* Street location badge */}
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFDF7] border-2 border-[#1E1B18] text-[#1E1B18] text-xs font-mono font-bold shadow-[2px_2px_0px_#1E1B18]">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#F15A24] animate-pulse" />
+          <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-auto font-hatke-body">
+            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] border-2 border-[#111827] text-[#111827] text-xs font-bold shadow-[2px_2px_0px_#111827]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1F5C3A] animate-pulse" />
               <span>{getLocationLabel()}</span>
             </div>
 
-            {/* Actions: Sound & Skip */}
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleSound}
                 aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
-                className="p-2 rounded-full bg-[#FFFDF7] border-2 border-[#1E1B18] text-[#1E1B18] hover:bg-[#FAF4E6] shadow-[2px_2px_0px_#1E1B18] transition-all cursor-pointer"
+                className="p-2.5 rounded-full bg-[#FFFFFF] border-2 border-[#111827] text-[#111827] hover:bg-[#FACC15] shadow-[2px_2px_0px_#111827] active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer"
                 title={isMuted ? 'Sound Off (Click to turn on)' : 'Sound On'}
               >
-                {isMuted ? <VolumeX className="w-4 h-4 text-[#1E1B18]" /> : <Volume2 className="w-4 h-4 text-[#F15A24]" />}
+                {isMuted ? <VolumeX className="w-4 h-4 text-[#111827]" /> : <Volume2 className="w-4 h-4 text-[#1F5C3A]" />}
               </button>
 
               <button
                 onClick={handleSkipToStore}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F15A24] border-2 border-[#1E1B18] text-white text-xs font-black tracking-wide shadow-[2px_2px_0px_#1E1B18] hover:bg-[#E04D18] active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FACC15] border-2 border-[#111827] text-[#111827] text-xs font-black tracking-wide shadow-[2.5px_2.5px_0px_#111827] hover:bg-[#EAB308] active:translate-x-[1px] active:translate-y-[1px] transition-all cursor-pointer font-hatke-body"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>{lang === 'ml' ? 'ഷോപ്പിലേക്ക്' : 'Skip to Store'}</span>
@@ -404,18 +400,18 @@ export default function HeroSection({ lang = 'en', onProgressUpdate }: HeroSecti
           </div>
         )}
 
-        {/* Minimal Bottom Progress Line */}
-        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#1E1B18] z-20">
+        {/* Bottom Progress Line in Haldi Yellow */}
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#111827] z-20 pointer-events-none">
           <div
-            className="h-full bg-[#F15A24] transition-all duration-75 ease-out"
+            className="h-full bg-[#FACC15] transition-all duration-75 ease-out"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
 
-        {/* Soft Indian Sandalwood dissolve layer */}
+        {/* Soft White dissolve layer */}
         <div
-          className="absolute inset-0 bg-[#FAF4E6] pointer-events-none transition-opacity duration-150"
-          style={{ opacity: easeFade }}
+          className="absolute inset-0 bg-[#FAF9F6] pointer-events-none transition-opacity duration-150"
+          style={{ opacity: exitFade }}
         />
       </div>
     </div>
