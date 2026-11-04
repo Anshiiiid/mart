@@ -112,8 +112,8 @@ export default function AdminPage() {
   const [productForm, setProductForm] = useState({
     name: '',
     nameMl: '',
-    category: 'Kitchen Finds',
-    categorySlug: 'kitchen-cookware',
+    category: 'Kitchen',
+    categorySlug: 'kitchen',
     price: 999,
     originalPrice: 1499,
     costPrice: 450,
@@ -637,8 +637,8 @@ export default function AdminPage() {
                 setProductForm({
                   name: '',
                   nameMl: '',
-                  category: 'Kitchen Finds',
-                  categorySlug: 'kitchen-cookware',
+                  category: 'Kitchen',
+                  categorySlug: 'kitchen',
                   price: 999,
                   originalPrice: 1499,
                   costPrice: 450,

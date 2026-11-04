@@ -181,7 +181,12 @@ export default function HomePage() {
       prod.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const matchesCategory =
-      selectedFilterCategory === 'all' || prod.categorySlug === selectedFilterCategory;
+      selectedFilterCategory === 'all' ||
+      prod.categorySlug === selectedFilterCategory ||
+      (selectedFilterCategory === 'kitchen' && (prod.categorySlug === 'kitchen-cookware' || prod.category.toLowerCase().includes('cookware') || prod.category.toLowerCase().includes('kitchen'))) ||
+      (selectedFilterCategory === 'tech' && (prod.categorySlug === 'cyber-audio' || prod.categorySlug === 'computing-workspace' || prod.categorySlug === 'smart-mobility' || prod.category.toLowerCase().includes('gadget') || prod.category.toLowerCase().includes('audio'))) ||
+      (selectedFilterCategory === 'kids' && (prod.categorySlug === 'kids-nursery' || prod.category.toLowerCase().includes('kids') || prod.category.toLowerCase().includes('toy'))) ||
+      (selectedFilterCategory === 'home' && (prod.categorySlug === 'home-appliances' || prod.categorySlug === 'ambient-living' || prod.categorySlug === 'modern-sanitation' || prod.category.toLowerCase().includes('home') || prod.category.toLowerCase().includes('appliances')));
 
     const matches3D = !only3D || prod.is3dAvailable;
 
@@ -250,7 +255,7 @@ export default function HomePage() {
                 </p>
                 <button
                   onClick={() => {
-                    setSelectedFilterCategory('kitchen-cookware');
+                    setSelectedFilterCategory('kitchen');
                     document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="desi-btn hatke-btn-black text-xs px-6 py-3 cursor-pointer uppercase tracking-wider"
